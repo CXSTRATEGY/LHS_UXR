@@ -1762,40 +1762,25 @@
                     </div>
                 </div>
 
+                
                 <div class="sorting-actions">
-    <div class="left-buttons">
-        <button class="btn btn-secondary" onclick="returnToLogin()">
-            ← 로그인으로
-        </button>
-        <button class="btn btn-secondary" onclick="resetAllCards()">
-            🔄 전체 초기화
-        </button>
-    </div>
-    <div class="right-buttons">
-        <button class="btn btn-secondary" onclick="autoSave()">
-            💾 임시 저장
-        </button>
-        <button class="btn btn-primary" onclick="submitSorting()" id="submit-btn">
-            ✅ 응답 제출하기
-        </button>
-    </div>
-</div>
-                <div class="sorting-actions">
+                  <div class="left-buttons">
                     <button class="btn btn-secondary" onclick="returnToLogin()">
-                        ← 로그인으로
+                     ← 로그인으로
+                 </button>
+                 <button class="btn btn-secondary" onclick="resetAllCards()">
+                   🔄 전체 초기화
+                 </button>
+               </div>
+               <div class="right-buttons">
+                 <button class="btn btn-secondary" onclick="autoSave()">
+                    💾 임시 저장
+                 </button>
+                   <button class="btn btn-primary" onclick="submitSorting()" id="submit-btn">
+                    ✅ 응답 제출하기
                     </button>
-                    <button class="btn btn-secondary" onclick="resetAllCards()">
-                        🔄 전체 초기화
-                    </button>
-                    <button class="btn btn-secondary" onclick="autoSave()">
-                        💾 임시 저장
-                    </button>
-                    <button class="btn btn-primary" onclick="submitSorting()" id="submit-btn">
-                        ✅ 응답 제출하기
-                    </button>
-                </div>
-            </div>
-        </div>
+                  </div>
+             </div>
 
         <!-- 설문 응답하기 페이지 -->
         <div id="survey-page" class="page">
@@ -1803,12 +1788,12 @@
                 <div class="survey-container">
                     <div class="survey-header">
                         <h2>와! 정말 멋진 카드분류가 완성되었는데요! 몇가지만 질문 드릴게요!</h2>
-                        <p style="color: #666; margin-top: 10px;">아래 카드들을 좌우로 드래그해서 선택해주세요.</p>
+                        <p style="color: #700; margin-top: 10px;">아래 카드들을 좌우로 드래그해서 선택해주세요.</p>
                     </div>
 
                     <!-- 안내 문구 -->
                     <div class="survey-progress-info">
-                        <div style="text-align: center; font-size: 16px; color: #333; font-weight: 600;">
+                        <div style="text-align: center; font-size: 18px; color: #000; font-weight: 700;">
                             지금까지 분류해주신 카드 중 '가장 많이 사용하는 혜택'과 '가장 적게 사용하는 혜택'을 각각 3개씩 분류해주세요.
                         </div>
                     </div>
@@ -1829,8 +1814,6 @@
                         <!-- 가운데: 분류된 카드들 -->
                         <div class="survey-cards-center">
                             <div class="survey-center-header">
-                                <h3>분류하신 카드들</h3>
-                                <p>카드를 좌우로 드래그해서 선택해주세요</p>
                             </div>
                             <div id="survey-center-groups">
                                 <!-- 그룹별 카드들이 여기에 표시됩니다 -->
