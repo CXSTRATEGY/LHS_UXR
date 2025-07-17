@@ -2076,8 +2076,8 @@
             const webappUrl = document.getElementById('webapp-url').value.trim();
             const spreadsheetId = document.getElementById('spreadsheet-id').value.trim();
             
-            if (!webappUrl || webappUrl === '여기에_새로운_웹앱_URL_입력') {
-                showNotification('웹앱 URL을 먼저 입력해주세요.', 'warning');
+            if (!webappUrl || webappUrl === 'https://script.google.com/macros/s/AKfycbzziEFatZ5P18qpBMWZ9RdDfxsWaxUUj5wukVEAQ1mXvuN4_jjR-hmUHrCkBj9TIzUl/exec') {
+                showNotification('https://script.google.com/macros/s/AKfycbzziEFatZ5P18qpBMWZ9RdDfxsWaxUUj5wukVEAQ1mXvuN4_jjR-hmUHrCkBj9TIzUl/exec', 'warning');
                 return;
             }
             
@@ -2140,7 +2140,7 @@
          */
         function openGoogleSheets() {
             const spreadsheetId = document.getElementById('spreadsheet-id').value.trim();
-            if (spreadsheetId && spreadsheetId !== '여기에_스프레드시트_ID_입력') {
+            if (spreadsheetId && spreadsheetId !== '1Obq03uGVc-897P76_-0AitVx6SglJx6agEWINLmE-qo') {
                 const sheetsUrl = `https://docs.google.com/spreadsheets/d/${spreadsheetId}/edit`;
                 window.open(sheetsUrl, '_blank');
             } else {
@@ -2333,7 +2333,7 @@
             const webappUrl = document.getElementById('webapp-url').value.trim();
             const spreadsheetId = document.getElementById('spreadsheet-id').value.trim();
             
-            if (webappUrl && webappUrl !== '여기에_새로운_웹앱_URL_입력') {
+            if (webappUrl && webappUrl !== 'https://script.google.com/macros/s/AKfycbzziEFatZ5P18qpBMWZ9RdDfxsWaxUUj5wukVEAQ1mXvuN4_jjR-hmUHrCkBj9TIzUl/exec') {
                 GOOGLE_APPS_SCRIPT_URL = webappUrl;
                 SPREADSHEET_ID = spreadsheetId;
                 
