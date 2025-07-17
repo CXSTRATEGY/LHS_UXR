@@ -1411,7 +1411,7 @@
                     <h1 style="color: #333; margin-bottom: 30px;">안녕하세요!</h1>
                     <p style="margin-bottom: 20px;">롯데홈쇼핑 온라인 리서치에 참여해주셔서 감사합니다.</p>
                     <p style="margin-bottom: 20px;">카드 분류하기는 약 10분 내외의 시간이 소요됩니다.</p>
-                    <p style="margin-bottom: 20px;">하단의 '리서치 참여하기' 버튼을 누르신 후 기본 정보를 입력하시면, 리서치 참여가 가능합니다.</p>
+                    <p style="margin-bottom: 20px;">아래 '리서치 참여하기' 버튼을 누르신 후 기본 정보를 입력하시면, 리서치 참여가 가능합니다.</p>
                     <p style="font-weight: 600;">카드 분류를 완료하신 후에는 "응답 제출하기" 버튼을 꼭 눌러주시길 바랍니다.</p>
                 </div>
                 <button class="btn btn-primary" style="font-size: 18px; padding: 15px 30px;" onclick="showParticipantLogin()">
@@ -1762,6 +1762,24 @@
                     </div>
                 </div>
 
+                <div class="sorting-actions">
+    <div class="left-buttons">
+        <button class="btn btn-secondary" onclick="returnToLogin()">
+            ← 로그인으로
+        </button>
+        <button class="btn btn-secondary" onclick="resetAllCards()">
+            🔄 전체 초기화
+        </button>
+    </div>
+    <div class="right-buttons">
+        <button class="btn btn-secondary" onclick="autoSave()">
+            💾 임시 저장
+        </button>
+        <button class="btn btn-primary" onclick="submitSorting()" id="submit-btn">
+            ✅ 응답 제출하기
+        </button>
+    </div>
+</div>
                 <div class="sorting-actions">
                     <button class="btn btn-secondary" onclick="returnToLogin()">
                         ← 로그인으로
