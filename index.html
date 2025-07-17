@@ -3701,7 +3701,7 @@
             const usedGroupsCount = Object.keys(groupResults).length;
             
             // 수정된 그룹명 개수 계산
-            const modifiedGroupNamesCount = responseData.modifiedGroupNames ? responseData.modifiedGroupNames.length : 0;
+            // const modifiedGroupNamesCount = responseData.modifiedGroupNames ? responseData.modifiedGroupNames.length : 0;
             
             // 설문 응답 정리
             const surveyResults = responseData.surveyData ? {
@@ -3727,7 +3727,7 @@
                 소팅방식: responseData.sortingType,
                 참여자가추가한그룹수: customGroupsCount,
                 참여자가분류한그룹수: usedGroupsCount,
-                참여자가변경한그룹명의수: modifiedGroupNamesCount,
+                //참여자가변경한그룹명의수: modifiedGroupNamesCount,
                 그룹별결과: JSON.stringify(groupResults),
                 그룹순서: groupOrder.join(' > '),
                 가장많이사용하는혜택: responseData.surveyData ? responseData.surveyData.question1.map(c => c.content).join(', ') : '',
