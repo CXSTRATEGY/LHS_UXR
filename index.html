@@ -1550,8 +1550,8 @@
                                 type="text" 
                                 id="webapp-url" 
                                 class="form-control" 
-                                placeholder="https://script.google.com/macros/s/AKfycbyFDS1TnwKzrMm5uBnc8S70Z1dKFXuJwBvJsvCCA1lb9v4MNtm2lCdv7eBBxbHqWc9Eug/exec"
-                                value="https://script.google.com/macros/s/AKfycbyFDS1TnwKzrMm5uBnc8S70Z1dKFXuJwBvJsvCCA1lb9v4MNtm2lCdv7eBBxbHqWc9Eug/exec"
+                                placeholder="https://script.google.com/macros/s/AKfycbyLimJ2f5fWdO-sk4Ng9h6XW7EOK3mC0yvk6OmOARJYvw7NQqIFUfaFwjwKhQ3z3LrOSg/exec"
+                                value="https://script.google.com/macros/s/AKfycbyLimJ2f5fWdO-sk4Ng9h6XW7EOK3mC0yvk6OmOARJYvw7NQqIFUfaFwjwKhQ3z3LrOSg/exec"
                             >
                         </div>
 
@@ -1955,7 +1955,7 @@
         // 🔗 Google Sheets 연동 설정 (CORS 우회 버전)
         // ============================================
         
-        let GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyFDS1TnwKzrMm5uBnc8S70Z1dKFXuJwBvJsvCCA1lb9v4MNtm2lCdv7eBBxbHqWc9Eug/exec';
+        let GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyLimJ2f5fWdO-sk4Ng9h6XW7EOK3mC0yvk6OmOARJYvw7NQqIFUfaFwjwKhQ3z3LrOSg/exec';
         let SPREADSHEET_ID = '1vn41OvbSoOrlWUSrgbFY_kyUMwjlH6BOAa-MC5xJv1w';
 
         // ============================================
@@ -2420,7 +2420,7 @@ async function testConnection() {
             const webappUrl = document.getElementById('webapp-url').value.trim();
             const spreadsheetId = document.getElementById('spreadsheet-id').value.trim();
             
-            if (webappUrl && webappUrl !== 'https://script.google.com/macros/s/AKfycbyFDS1TnwKzrMm5uBnc8S70Z1dKFXuJwBvJsvCCA1lb9v4MNtm2lCdv7eBBxbHqWc9Eug/exec') {
+            if (webappUrl && webappUrl !== 'https://script.google.com/macros/s/AKfycbyLimJ2f5fWdO-sk4Ng9h6XW7EOK3mC0yvk6OmOARJYvw7NQqIFUfaFwjwKhQ3z3LrOSg/exec') {
                 GOOGLE_APPS_SCRIPT_URL = webappUrl;
                 SPREADSHEET_ID = spreadsheetId;
                 
