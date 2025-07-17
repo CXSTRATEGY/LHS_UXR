@@ -1998,12 +1998,62 @@
         // ============================================
 
         /**
-         * JSONP 방식으로 Google Sheets에 데이터 저장 (CORS 우회)
+         * POST 방식으로 Google Sheets에 데이터 저장 (CORS 허용)
          */
         async function saveToGoogleSheets(responseData, projectConfig) {
+            try {
+                console.log('🔗 Google Sheets 저장 시작 (POST 방식)...');
+                
+                // 데이터 포맷팅
+                const exportData = formatResponseForExport(responseData, projectConfig);
+                
+                // POST 요청으로 전송
+                const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        action: 'save',
+                        data: exportData
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const result = await response.json();
+                console.log('📊 Google Sheets 응답:', result);
+                
+                if (result.status === 'success') {
+                    showNotification('✅ Google Sheets에 성공적으로 저장되었습니다!', 'success');
+                    return result;
+                } else {
+                    throw new Error(result.message || '저장 실패');
+                }
+                
+            } catch (error) {
+                console.error('❌ Google Sheets 저장 실패:', error);
+                
+                // CORS 오류인 경우 JSONP 방식으로 재시도
+                if (error.message.includes('CORS') || error.message.includes('Network')) {
+                    console.log('🔄 JSONP 방식으로 재시도...');
+                    return await saveToGoogleSheetsJSONP(responseData, projectConfig);
+                }
+                
+                throw error;
+            }
+        }
+
+        /**
+         * JSONP 방식 백업 (CORS 실패시 사용)
+         */
+        async function saveToGoogleSheetsJSONP(responseData, projectConfig) {
             return new Promise((resolve, reject) => {
                 try {
-                    console.log('🔗 Google Sheets 저장 시작 (JSONP 방식)...');
+                    console.log('🔗 Google Sheets 저장 시작 (JSONP 백업 방식)...');
                     
                     // 데이터 포맷팅
                     const exportData = formatResponseForExport(responseData, projectConfig);
@@ -2021,20 +2071,42 @@
                         
                         console.log('📊 Google Sheets 응답:', response);
                         
-                        if (response.status === 'success') {
+                        if (response && response.status === 'success') {
                             showNotification('✅ Google Sheets에 성공적으로 저장되었습니다!', 'success');
                             resolve(response);
                         } else {
-                            reject(new Error(response.message || '저장 실패'));
+                            reject(new Error(response?.message || '저장 실패'));
                         }
                     };
                     
-                    // URL 구성
-                    const params = new URLSearchParams({
-                        action: 'save',
-                        data: JSON.stringify(exportData),
-                        callback: callbackName
-                    });
+                    // URL 구성 (데이터 크기 제한)
+                    const dataString = JSON.stringify(exportData);
+                    let params;
+                    
+                    if (dataString.length > 8000) {
+                        // 데이터가 너무 큰 경우 핵심 정보만 전송
+                        const minimalData = {
+                            이름: exportData.이름,
+                            휴대폰뒷번호4자리: exportData.휴대폰뒷번호4자리,
+                            완료시간: exportData.완료시간,
+                            소요시간: exportData.소요시간,
+                            그룹별결과: exportData.그룹별결과,
+                            가장많이사용하는혜택: exportData.가장많이사용하는혜택,
+                            가장적게사용하는혜택: exportData.가장적게사용하는혜택,
+                            참여자의견: exportData.참여자의견
+                        };
+                        params = new URLSearchParams({
+                            action: 'save',
+                            data: JSON.stringify(minimalData),
+                            callback: callbackName
+                        });
+                    } else {
+                        params = new URLSearchParams({
+                            action: 'save',
+                            data: dataString,
+                            callback: callbackName
+                        });
+                    }
                     
                     const url = `${GOOGLE_APPS_SCRIPT_URL}?${params.toString()}`;
                     
@@ -2049,7 +2121,7 @@
                         reject(new Error('네트워크 오류: 스크립트 로드 실패'));
                     };
                     
-                    // 타임아웃 설정 (15초)
+                    // 타임아웃 설정 (20초)
                     setTimeout(() => {
                         if (window[callbackName]) {
                             delete window[callbackName];
@@ -2058,12 +2130,12 @@
                             }
                             reject(new Error('타임아웃: 응답을 받지 못했습니다.'));
                         }
-                    }, 15000);
+                    }, 20000);
                     
                     document.head.appendChild(script);
                     
                 } catch (error) {
-                    console.error('❌ Google Sheets 저장 실패:', error);
+                    console.error('❌ Google Sheets JSONP 저장 실패:', error);
                     reject(error);
                 }
             });
