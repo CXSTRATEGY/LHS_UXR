@@ -1550,8 +1550,8 @@
                                 type="text" 
                                 id="webapp-url" 
                                 class="form-control" 
-                                placeholder="https://script.google.com/macros/s/AKfycbwMBp_1bga7QsjxJBtiFhTRrq0mwPwjv8PIRFtDkDENrSZneXKfb0DbqF9uRTU7VN7HVg/exec"
-                                value="https://script.google.com/macros/s/AKfycbwMBp_1bga7QsjxJBtiFhTRrq0mwPwjv8PIRFtDkDENrSZneXKfb0DbqF9uRTU7VN7HVg/exec"
+                                placeholder="https://script.google.com/macros/s/AKfycbyFDS1TnwKzrMm5uBnc8S70Z1dKFXuJwBvJsvCCA1lb9v4MNtm2lCdv7eBBxbHqWc9Eug/exec"
+                                value="https://script.google.com/macros/s/AKfycbyFDS1TnwKzrMm5uBnc8S70Z1dKFXuJwBvJsvCCA1lb9v4MNtm2lCdv7eBBxbHqWc9Eug/exec"
                             >
                         </div>
 
@@ -1955,7 +1955,7 @@
         // 🔗 Google Sheets 연동 설정 (CORS 우회 버전)
         // ============================================
         
-        let GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwMBp_1bga7QsjxJBtiFhTRrq0mwPwjv8PIRFtDkDENrSZneXKfb0DbqF9uRTU7VN7HVg/exec';
+        let GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyFDS1TnwKzrMm5uBnc8S70Z1dKFXuJwBvJsvCCA1lb9v4MNtm2lCdv7eBBxbHqWc9Eug/exec';
         let SPREADSHEET_ID = '1vn41OvbSoOrlWUSrgbFY_kyUMwjlH6BOAa-MC5xJv1w';
 
         // ============================================
@@ -2069,71 +2069,86 @@
             });
         }
 
-        /**
-         * 연결 테스트 함수
-         */
-        async function testConnection() {
-            const webappUrl = document.getElementById('webapp-url').value.trim();
-            const spreadsheetId = document.getElementById('spreadsheet-id').value.trim();
-            
-            if (!webappUrl || webappUrl === 'https://script.google.com/macros/s/AKfycbwMBp_1bga7QsjxJBtiFhTRrq0mwPwjv8PIRFtDkDENrSZneXKfb0DbqF9uRTU7VN7HVg/exec') {
-                showNotification('https://script.google.com/macros/s/AKfycbwMBp_1bga7QsjxJBtiFhTRrq0mwPwjv8PIRFtDkDENrSZneXKfb0DbqF9uRTU7VN7HVg/exec', 'warning');
-                return;
+/**
+ * 연결 테스트 함수
+ */
+async function testConnection() {
+    const webappUrl = document.getElementById('webapp-url').value.trim();
+    const spreadsheetId = document.getElementById('spreadsheet-id').value.trim();
+    
+    const statusDiv = document.getElementById('connection-status');
+    statusDiv.innerHTML = '<strong>연결 상태:</strong> 테스트 중...';
+    statusDiv.className = 'alert alert-info';
+    
+    // 입력값 검증
+    if (!webappUrl) {
+        statusDiv.innerHTML = '❌ <strong>오류:</strong> 웹앱 URL을 입력해주세요.';
+        statusDiv.className = 'alert alert-warning';
+        return;
+    }
+    
+    if (!spreadsheetId) {
+        statusDiv.innerHTML = '❌ <strong>오류:</strong> 스프레드시트 ID를 입력해주세요.';
+        statusDiv.className = 'alert alert-warning';
+        return;
+    }
+    
+    // URL 형식 검증
+    if (!webappUrl.includes('script.google.com/macros/s/')) {
+        statusDiv.innerHTML = '❌ <strong>오류:</strong> 올바른 Google Apps Script 웹앱 URL을 입력해주세요.';
+        statusDiv.className = 'alert alert-warning';
+        return;
+    }
+    
+    // 임시로 URL 설정
+    GOOGLE_APPS_SCRIPT_URL = webappUrl;
+    SPREADSHEET_ID = spreadsheetId;
+    
+    try {
+        // 테스트 데이터 생성
+        const testData = {
+            participantInfo: {
+                participantId: 'connection_test_' + Date.now(),
+                name: '연결 테스트',
+                phone: '0000'
+            },
+            timeInfo: {
+                startTime: new Date().toISOString(),
+                completedTime: new Date().toISOString(),
+                durationMinutes: 0
+            },
+            sortingResults: {
+                sortingType: 'connection_test',
+                totalCards: 1,
+                assignedCards: 1,
+                totalGroups: 1,
+                groupResults: {
+                    '테스트그룹': ['연결 테스트 카드']
+                }
+            },
+            projectInfo: {
+                projectTitle: '연결 테스트',
+                sortingType: 'connection_test'
             }
-            
-            // 임시로 URL 설정
-            GOOGLE_APPS_SCRIPT_URL = webappUrl;
-            SPREADSHEET_ID = spreadsheetId;
-            
-            const statusDiv = document.getElementById('connection-status');
-            statusDiv.innerHTML = '<strong>연결 상태:</strong> 테스트 중...';
-            statusDiv.className = 'alert alert-info';
-            
-            try {
-                // 테스트 데이터 생성
-                const testData = {
-                    participantInfo: {
-                        participantId: 'connection_test_' + Date.now(),
-                        name: '연결 테스트',
-                        phone: '0000'
-                    },
-                    timeInfo: {
-                        startTime: new Date().toISOString(),
-                        completedTime: new Date().toISOString(),
-                        durationMinutes: 0
-                    },
-                    sortingResults: {
-                        sortingType: 'connection_test',
-                        totalCards: 1,
-                        assignedCards: 1,
-                        totalGroups: 1,
-                        groupResults: {
-                            '테스트그룹': ['연결 테스트 카드']
-                        }
-                    },
-                    projectInfo: {
-                        projectTitle: '연결 테스트',
-                        sortingType: 'connection_test'
-                    }
-                };
-                
-                const result = await saveToGoogleSheets(testData, { title: '연결 테스트', cards: ['테스트 카드'] });
-                
-                statusDiv.innerHTML = '✅ <strong>연결 성공!</strong> Google Sheets와 정상 연결되었습니다.';
-                statusDiv.className = 'alert alert-success';
-                
-                // 설정 저장
-                localStorage.setItem('google_sheets_config', JSON.stringify({
-                    webappUrl: webappUrl,
-                    spreadsheetId: spreadsheetId
-                }));
-                
-            } catch (error) {
-                console.error('연결 테스트 실패:', error);
-                statusDiv.innerHTML = `❌ <strong>연결 실패:</strong> ${error.message}`;
-                statusDiv.className = 'alert alert-warning';
-            }
-        }
+        };
+        
+        const result = await saveToGoogleSheets(testData, { title: '연결 테스트', cards: ['테스트 카드'] });
+        
+        statusDiv.innerHTML = '✅ <strong>연결 성공!</strong> Google Sheets와 정상 연결되었습니다.';
+        statusDiv.className = 'alert alert-success';
+        
+        // 설정 저장
+        localStorage.setItem('google_sheets_config', JSON.stringify({
+            webappUrl: webappUrl,
+            spreadsheetId: spreadsheetId
+        }));
+        
+    } catch (error) {
+        console.error('연결 테스트 실패:', error);
+        statusDiv.innerHTML = `❌ <strong>연결 실패:</strong> ${error.message}`;
+        statusDiv.className = 'alert alert-warning';
+    }
+}
 
         /**
          * Google Sheets 열기
@@ -2333,7 +2348,7 @@
             const webappUrl = document.getElementById('webapp-url').value.trim();
             const spreadsheetId = document.getElementById('spreadsheet-id').value.trim();
             
-            if (webappUrl && webappUrl !== 'https://script.google.com/macros/s/AKfycbwMBp_1bga7QsjxJBtiFhTRrq0mwPwjv8PIRFtDkDENrSZneXKfb0DbqF9uRTU7VN7HVg/exec') {
+            if (webappUrl && webappUrl !== 'https://script.google.com/macros/s/AKfycbyFDS1TnwKzrMm5uBnc8S70Z1dKFXuJwBvJsvCCA1lb9v4MNtm2lCdv7eBBxbHqWc9Eug/exec') {
                 GOOGLE_APPS_SCRIPT_URL = webappUrl;
                 SPREADSHEET_ID = spreadsheetId;
                 
