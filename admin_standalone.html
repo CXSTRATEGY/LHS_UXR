@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>카드소팅 관리자</title>
+    <style>
+        /* 공통 스타일 + 관리자 전용 스타일 */
+        
+        /* 기본 리셋 및 전역 설정 */
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+        }
+        
+        /* Cross-browser 폰트 최적화 */
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Malgun Gothic', 'Apple SD Gothic Neo', Roboto, sans-serif; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+            background-attachment: fixed;
+            background-size: cover;
+            min-height: 100vh; 
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        /* 컨테이너 해상도별 최적화 */
+        .container { 
+            width: 100%;
+            max-width: 1400px; 
+            min-width: 320px;
+            margin: 0 auto; 
+            padding: 10px; 
+            min-height: 100vh;
+        }
+        
+        /* 1920×1080 최적화 */
+        @media screen and (min-width: 1920px) {
+            .container {
+                max-width: 1600px;
+                padding: 20px;
+            }
+        }
+        
+        /* 고해상도 대응 (2560×1440, 3440×1440) */
+        @media screen and (min-width: 2560px) {
+            .container {
+                max-width: 2000px;
+                padding: 30px;
+            }
+        }
+        
+        /* 저해상도 대응 (1366×768, 1024×768) */
+        @media screen and (max-width: 1366px) {
+            .container {
+                padding: 5px;
+            }
+        }
+        
+        /* 기본 카드 스타일 */
+        .card { 
+            background: white; 
+            border-radius: 12px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
+            overflow: hidden;
+            -webkit-border-radius: 12px;
+            -moz-border-radius: 12px;
+        }
+        
+        /* 페이지 전환 애니메이션 */
+        .page { 
+            display: none; 
+            -webkit-animation: fadeIn 0.3s ease-in;
+            -moz-animation: fadeIn 0.3s ease-in;
+            animation: fadeIn 0.3s ease-in;
+        }
+        
+        .page.active { display: block; }
+        
+        @-webkit-keyframes fadeIn { 
+            from { opacity: 0; -webkit-transform: translateY(20px); } 
+            to { opacity: 1; -webkit-transform: translateY(0); } 
+        }
+        
+        @-moz-keyframes fadeIn { 
+            from { opacity: 0; -moz-transform: translateY(20px); } 
+            to { opacity: 1; -moz-transform: translateY(0); } 
+        }
+        
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translateY(20px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+        
+        /* 헤더 공통 스타일 */
+        .header { 
+            background: white; 
+            padding: 20px 30px; 
+            border-bottom: 1px solid #eee; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+        
+        .logo { 
+            font-size: 24px; 
+            font-weight: bold; 
+            color: #333; 
+        }
+        
+        .nav-buttons { 
+            display: flex; 
+            gap: 10px; 
+        }
+        
+        /* 폼 공통 스타일 */
+        .form-group { 
+            margin: 20px 0; 
+        }
+        
+        .form-label { 
+            display: block; 
+            margin-bottom: 8px; 
+            font-weight: 600; 
+            color: #333; 
+        }
+        
+        .form-control { 
+            width: 100%; 
+            padding: 12px; 
+            border: 2px solid #e1e5e9; 
+            border-radius: 8px; 
+            font-size: 16px; 
+            transition: border-color 0.3s;
+        }
+        
+        .form-control:focus { 
+            outline: none; 
+            border-color: #667eea; 
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .textarea { 
+            min-height: 120px; 
+            resize: vertical; 
+            font-family: inherit; 
+        }
+        
+        /* 버튼 공통 스타일 */
+        .btn { 
+            padding: 12px 24px; 
+            border: none; 
+            border-radius: 8px; 
+            font-size: 16px; 
+            font-weight: 600; 
+            cursor: pointer; 
+            transition: all 0.3s; 
+            text-decoration: none; 
+            display: inline-block; 
+            text-align: center;
+        }
+        
+        .btn-primary { 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+            color: white; 
+        }
+        
+        .btn-primary:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-secondary { 
+            background: #e9ecef; 
+            color: #495057; 
+            border: 1px solid #ced4da; 
+        }
+        
+        .btn-secondary:hover { 
+            background: #dee2e6; 
+            border-color: #ced4da; 
+        }
+        
+        .btn-danger { 
+            background: #e74c3c; 
+            color: white; 
+        }
+        
+        .btn-danger:hover { 
+            background: #c0392b; 
+        }
+        
+        /* 로그인 공통 스타일 */
+        .login-container { 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            padding: 20px; 
+        }
+        
+        .login-box { 
+            background: white; 
+            padding: 40px; 
+            border-radius: 12px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
+            width: 100%; 
+            max-width: 400px;
+        }
+        
+        .login-title { 
+            text-align: center; 
+            font-size: 20px; 
+            font-weight: bold; 
+            color: #333; 
+            margin-bottom: 10px; 
+            line-height: 1.3; 
+        }
+        
+        .login-subtitle { 
+            text-align: center; 
+            color: #666; 
+            margin-bottom: 30px; 
+        }
+        
+        /* 체크박스 스타일 */
+        .checkbox-group { 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            margin: 15px 0; 
+        }
+        
+        .checkbox-group input[type="checkbox"] { 
+            margin: 0; 
+        }
+        
+        /* 알림 스타일 */
+        .alert { 
+            padding: 12px 16px; 
+            border-radius: 8px; 
+            margin: 15px 0; 
+            border-left: 4px solid;
+        }
+        
+        .alert-info { 
+            background: #e3f2fd; 
+            border-color: #2196f3; 
+            color: #1976d2; 
+        }
+        
+        .alert-warning { 
+            background: #fff3e0; 
+            border-color: #ff9800; 
+            color: #f57c00; 
+        }
+        
+        .alert-success { 
+            background: #e8f5e9; 
+            border-color: #4caf50; 
+            color: #388e3c; 
+        }
+        
+        /* 유틸리티 클래스 */
+        .hidden { 
+            display: none !important; 
+        }
+        
+        .text-center { 
+            text-align: center; 
+        }
+        
+        .mt-2 { margin-top: 10px; }
+        .mt-3 { margin-top: 15px; }
+        .mb-2 { margin-bottom: 10px; }
+        .mb-3 { margin-bottom: 15px; }
+        
+        .flex { 
+            display: flex !important; 
+        }
+        
+        .flex-wrap { 
+            flex-wrap: wrap; 
+        }
+        
+        .gap-2 { gap: 10px; }
+        .gap-3 { gap: 15px; }
+        
+        .justify-center { 
+            justify-content: center; 
+        }
+        
+        .items-center { 
+            align-items: center; 
+        }
+        
+        .w-full { 
+            width: 100%; 
+        }
+        
+        /* 알림 토스트 스타일 */
+        .notification {
+            position: fixed;
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 9999;
+            max-width: 500px;
+            padding: 20px 25px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            font-weight: 600;
+            font-size: 16px;
+            animation: slideInDown 0.3s ease-out;
+            border: 2px solid;
+        }
+        
+        @keyframes slideInDown {
+            from { opacity: 0; transform: translateX(-50%) translateY(-30px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+        
+        /* 관리자 전용 스타일 */
+        .admin-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px; 
+            padding: 30px; 
+        }
+        
+        .admin-section { 
+            background: #f8f9fa; 
+            padding: 25px; 
+            border-radius: 12px; 
+            border: 1px solid #e9ecef;
+        }
+        
+        .admin-section h3 { 
+            color: #333; 
+            margin-bottom: 20px; 
+            font-size: 20px; 
+        }
+        
+        .stats-grid { 
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px; 
+            margin: 20px 0; 
+        }
+        
+        .stat-card { 
+            background: white; 
+            padding: 20px; 
+            border-radius: 8px; 
+            text-align: center; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .stat-number { 
+            font-size: 24px; 
+            font-weight: bold; 
+            color: #667eea; 
+        }
+        
+        .stat-label { 
+            font-size: 14px; 
+            color: #666; 
+            margin-top: 5px; 
+        }
+        
+        /* 해상도별 최적화 */
+        @media screen and (min-width: 1920px) {
+            .admin-grid {
+                grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+                gap: 40px;
+                padding: 40px;
+            }
+        }
+        
+        @media screen and (min-width: 2560px) {
+            .admin-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 50px;
+                padding: 50px;
+            }
+        }
+        
+        @media screen and (max-width: 1366px) {
+            .admin-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding: 20px;
+            }
+        }
+        
+        @media (max-width: 768px) { 
+            .admin-grid { 
+                grid-template-columns: 1fr;
+                padding: 20px; 
+            }
+            
+            .nav-buttons { 
+                flex-direction: column; 
+                width: 100%; 
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 관리자 로그인 -->
+        <div id="admin-login-page" class="page active">
+            <div class="login-container">
+                <div class="login-box">
+                    <h1 class="login-title">관리자 로그인</h1>
+                    <p class="login-subtitle">관리자 전용 페이지입니다</p>
+                    
+                    <form onsubmit="adminLogin(event)">
+                        <div class="form-group">
+                            <label class="form-label">관리자 비밀번호</label>
+                            <input 
+                                type="password" 
+                                id="admin-password" 
+                                class="form-control" 
+                                placeholder="비밀번호를 입력하세요"
+                                required
+                            >
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary w-full">
+                            로그인
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- 관리자 대시보드 -->
+        <div id="admin-dashboard-page" class="page">
+            <div class="card">
+                <div class="header">
+                    <div class="logo">카드소팅 관리자 (Google Sheets 연동)</div>
+                    <div class="nav-buttons">
+                        <button class="btn btn-danger" onclick="adminLogout()">로그아웃</button>
+                    </div>
+                </div>
+
+                <div class="admin-grid">
+                    <div class="admin-section">
+                        <h3>🎯 프로젝트 설정</h3>
+                        
+                        <div class="form-group">
+                            <label class="form-label">프로젝트 제목</label>
+                            <input 
+                                type="text" 
+                                id="project-title" 
+                                class="form-control" 
+                                value="혜택 콘텐츠 카드소팅"
+                                placeholder="프로젝트 제목을 입력하세요"
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">소팅 방식</label>
+                            <select id="sorting-type" class="form-control">
+                                <option value="open">오픈 소팅 (그룹 자유 생성)</option>
+                                <option value="closed">클로즈드 소팅 (고정 그룹만)</option>
+                                <option value="hybrid" selected>하이브리드 소팅 (기본 + 사용자 생성)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group" id="predefined-groups-section">
+                            <label class="form-label">기본 그룹 (클로즈드/하이브리드 전용)</label>
+                            <textarea 
+                                id="predefined-groups" 
+                                class="form-control textarea" 
+                                placeholder="한 줄에 하나씩 입력하세요"
+                            >구매혜택
+참여혜택
+카드/결제혜택</textarea>
+                        </div>
+
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="shuffle-cards" checked>
+                            <label for="shuffle-cards">카드 순서 무작위 섞기</label>
+                        </div>
+
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="allow-edit-groups" checked>
+                            <label for="allow-edit-groups">기본 그룹명 수정 허용</label>
+                        </div>
+                    </div>
+
+                    <div class="admin-section">
+                        <h3>🃏 카드 목록 관리</h3>
+                        
+                        <div class="form-group">
+                            <label class="form-label">카드 목록 (최대 100개)</label>
+                            <textarea 
+                                id="card-list" 
+                                class="form-control textarea" 
+                                placeholder="한 줄에 하나씩 입력하세요"
+                                style="min-height: 200px;"
+                            >방송 알림 신청하고 적립금 받기
+멤버십 가입하고 할인 쿠폰 받기
+방송 채팅 남기고 적립금 받기
+친구 추천하고 포인트 받기
+첫 구매 후 캐시백 받기
+리뷰 작성하고 적립금 받기
+생일 쿠폰 받기
+등급별 할인 혜택
+무료배송 혜택
+적립금 혜택</textarea>
+                        </div>
+
+                        <div class="flex gap-2">
+                            <input 
+                                type="text" 
+                                id="new-card" 
+                                class="form-control" 
+                                placeholder="새 카드 추가"
+                                style="flex: 1;"
+                            >
+                            <button class="btn btn-secondary" onclick="addNewCard()">추가</button>
+                        </div>
+
+                        <div class="alert alert-info mt-2">
+                            <strong>현재 카드 수:</strong> <span id="card-count">10</span>개
+                        </div>
+                    </div>
+
+                    <div class="admin-section">
+                        <h3>🔗 Google Sheets 설정</h3>
+                        
+                        <div class="form-group">
+                            <label class="form-label">웹앱 URL</label>
+                            <input 
+                                type="text" 
+                                id="webapp-url" 
+                                class="form-control" 
+                                placeholder="https://script.google.com/macros/s/AKfycbwbNhV4IPL0qb36bgelyKi2SYqjQY7OFDZ-Mh3WWn3zKaKG2du-5vG_pazf1QfyQNnILg/exec"
+                                value="https://script.google.com/macros/s/AKfycbwbNhV4IPL0qb36bgelyKi2SYqjQY7OFDZ-Mh3WWn3zKaKG2du-5vG_pazf1QfyQNnILg/exec"
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">스프레드시트 ID</label>
+                            <input 
+                                type="text" 
+                                id="spreadsheet-id" 
+                                class="form-control" 
+                                placeholder="1V9iTiBnesG9TRTHzohpAyC0358xzQVn2j9qQuVaj8FY"
+                                value="1V9iTiBnesG9TRTHzohpAyC0358xzQVn2j9qQuVaj8FY"
+                            >
+                        </div>
+
+                        <button class="btn btn-primary w-full mb-3" onclick="testConnection()">
+                            🔗 연결 테스트
+                        </button>
+
+                        <div id="connection-status" class="alert alert-info">
+                            <strong>연결 상태:</strong> 테스트를 실행해주세요
+                        </div>
+                    </div>
+
+                    <div class="admin-section">
+                        <h3>🔗 응답자 URL 생성</h3>
+                        
+                        <button class="btn btn-primary w-full mb-3" onclick="generateURL()">
+                            프로젝트 저장 및 URL 생성
+                        </button>
+
+                        <div id="generated-url-section" class="hidden">
+                            <div class="form-group">
+                                <label class="form-label">생성된 응답자 URL</label>
+                                <div style="position: relative;">
+                                    <input 
+                                        type="text" 
+                                        id="generated-url" 
+                                        class="form-control" 
+                                        readonly
+                                        style="padding-right: 60px;"
+                                    >
+                                    <button 
+                                        class="btn btn-secondary" 
+                                        onclick="copyURL()"
+                                        style="position: absolute; right: 5px; top: 50%; transform: translateY(-50%); padding: 5px 10px; font-size: 12px;"
+                                    >
+                                        복사
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="flex gap-2 mt-2">
+                                <button class="btn btn-secondary" onclick="openParticipantURL()">👤 응답자 페이지</button>
+                                <button class="btn btn-secondary" onclick="openGoogleSheetsPage()">📊 Google Sheets 열기</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="admin-section">
+                        <h3>📊 응답 현황</h3>
+                        
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-number" id="total-responses">0</div>
+                                <div class="stat-label">총 응답 수</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number" id="completed-responses">0</div>
+                                <div class="stat-label">완료된 응답</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number" id="ongoing-responses">0</div>
+                                <div class="stat-label">진행 중</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number" id="avg-duration">0분</div>
+                                <div class="stat-label">평균 소요시간</div>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-2 mt-3">
+                            <button class="btn btn-primary" onclick="downloadAllResponses()" style="flex: 1;">
+                                📥 JSON 다운로드
+                            </button>
+                            <button class="btn btn-secondary" onclick="openGoogleSheetsPage()">
+                                📊 Google Sheets
+                            </button>
+                            <button class="btn btn-secondary" onclick="clearAllData()">
+                                🗑️ 초기화
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 공통 기능 + 관리자 전용 기능
+        
+        // ============================================
+        // 🔗 Google Sheets 연동 설정
+        // ============================================
+        
+        let GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx3ridIkA9eP6YX0WrUgBItWJo_uRWDjvrUf6IqX95POh1JMqA2xlP7qXx5BFzYTUFNiQ/exec';
+        let SPREADSHEET_ID = '1V9iTiBnesG9TRTHzohpAyC0358xzQVn2j9qQuVaj8FY';
+        
+        // ============================================
+        // 🔧 유틸리티 함수들
+        // ============================================
+        
+        function saveToStorage(key, data) {
+            try {
+                localStorage.setItem(key, JSON.stringify(data));
+                return true;
+            } catch (error) {
+                console.error('저장 실패:', error);
+                return false;
+            }
+        }
+        
+        function loadFromStorage(key, defaultValue = null) {
+            try {
+                const data = localStorage.getItem(key);
+                return data ? JSON.parse(data) : defaultValue;
+            } catch (error) {
+                console.error('불러오기 실패:', error);
+                return defaultValue;
+            }
+        }
+        
+        function generateId() {
+            return Date.now().toString(36) + Math.random().toString(36).substr(2, 9);
+        }
+        
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+        }
+        
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            
+            const colors = {
+                success: { bg: '#d4edda', border: '#28a745', text: '#155724' },
+                warning: { bg: '#fff3cd', border: '#ffc107', text: '#856404' },
+                error: { bg: '#f8d7da', border: '#dc3545', text: '#721c24' },
+                info: { bg: '#d1ecf1', border: '#17a2b8', text: '#0c5460' }
+            };
+            
+            const color = colors[type] || colors.info;
+            notification.style.backgroundColor = color.bg;
+            notification.style.borderColor = color.border;
+            notification.style.color = color.text;
+            
+            notification.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span>${message}</span>
+                    <button onclick="this.parentElement.parentElement.remove()" 
+                            style="background: none; border: none; font-size: 20px; cursor: pointer; color: ${color.text}; margin-left: 15px;">×</button>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                if (notification.parentElement) {
+                    notification.remove();
+                }
+            }, 5000);
+        }
+        
+        // ============================================
+        // 🔗 Google Sheets 연동 함수들
+        // ============================================
+        
+        async function saveToGoogleSheets(responseData, projectConfig) {
+            return new Promise((resolve, reject) => {
+                try {
+                    console.log('🔗 Google Sheets 저장 시작 (JSONP 방식)...');
+                    
+                    const exportData = formatResponseForExport(responseData, projectConfig);
+                    
+                    const callbackName = 'jsonp_callback_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5);
+                    
+                    window[callbackName] = function(response) {
+                        delete window[callbackName];
+                        if (document.head.contains(script)) {
+                            document.head.removeChild(script);
+                        }
+                        
+                        console.log('📊 Google Sheets 응답:', response);
+                        
+                        if (response.status === 'success') {
+                            showNotification('✅ Google Sheets에 성공적으로 저장되었습니다!', 'success');
+                            resolve(response);
+                        } else {
+                            reject(new Error(response.message || '저장 실패'));
+                        }
+                    };
+                    
+                    const params = new URLSearchParams({
+                        action: 'save',
+                        data: JSON.stringify(exportData),
+                        callback: callbackName
+                    });
+                    
+                    const url = `${GOOGLE_APPS_SCRIPT_URL}?${params.toString()}`;
+                    
+                    const script = document.createElement('script');
+                    script.src = url;
+                    script.onerror = function() {
+                        delete window[callbackName];
+                        if (document.head.contains(script)) {
+                            document.head.removeChild(script);
+                        }
+                        reject(new Error('네트워크 오류: 스크립트 로드 실패'));
+                    };
+                    
+                    setTimeout(() => {
+                        if (window[callbackName]) {
+                            delete window[callbackName];
+                            if (document.head.contains(script)) {
+                                document.head.removeChild(script);
+                            }
+                            reject(new Error('타임아웃: 응답을 받지 못했습니다.'));
+                        }
+                    }, 15000);
+                    
+                    document.head.appendChild(script);
+                    
+                } catch (error) {
+                    console.error('❌ Google Sheets 저장 실패:', error);
+                    reject(error);
+                }
+            });
+        }
+        
+        async function testGoogleSheetsConnection(webappUrl, spreadsheetId) {
+            const originalUrl = GOOGLE_APPS_SCRIPT_URL;
+            const originalId = SPREADSHEET_ID;
+            
+            GOOGLE_APPS_SCRIPT_URL = webappUrl;
+            SPREADSHEET_ID = spreadsheetId;
+            
+            try {
+                const testData = {
+                    participantInfo: {
+                        participantId: 'connection_test_' + Date.now(),
+                        name: '연결 테스트',
+                        phone: '0000'
+                    },
+                    timeInfo: {
+                        startTime: new Date().toISOString(),
+                        completedTime: new Date().toISOString(),
+                        durationMinutes: 0
+                    },
+                    sortingResults: {
+                        sortingType: 'connection_test',
+                        totalCards: 1,
+                        assignedCards: 1,
+                        totalGroups: 1,
+                        groupResults: {
+                            '테스트그룹': ['연결 테스트 카드']
+                        }
+                    },
+                    projectInfo: {
+                        projectTitle: '연결 테스트',
+                        sortingType: 'connection_test'
+                    }
+                };
+                
+                const result = await saveToGoogleSheets(testData, { title: '연결 테스트', cards: ['테스트 카드'] });
+                
+                localStorage.setItem('google_sheets_config', JSON.stringify({
+                    webappUrl: webappUrl,
+                    spreadsheetId: spreadsheetId
+                }));
+                
+                return { success: true, message: '연결 성공!' };
+                
+            } catch (error) {
+                console.error('연결 테스트 실패:', error);
+                
+                GOOGLE_APPS_SCRIPT_URL = originalUrl;
+                SPREADSHEET_ID = originalId;
+                
+                return { success: false, message: error.message };
+            }
+        }
+        
+        function formatResponseForExport(responseData, projectConfig) {
+            const groupResults = {};
+            const cardDistribution = {};
+            const groupOrder = [];
+            
+            const sortedGroups = Object.values(responseData.groups || {}).sort((a, b) => (a.order || 0) - (b.order || 0));
+            
+            sortedGroups.forEach(group => {
+                if (group.cards.length > 0) {
+                    groupResults[group.name] = group.cards.map(card => card.content);
+                    groupOrder.push(group.name);
+                    group.cards.forEach(card => {
+                        cardDistribution[card.content] = group.name;
+                    });
+                }
+            });
+            
+            if (responseData.unassignedCards && responseData.unassignedCards.length > 0) {
+                groupResults['미분류'] = responseData.unassignedCards.map(card => card.content);
+                responseData.unassignedCards.forEach(card => {
+                    cardDistribution[card.content] = '미분류';
+                });
+            }
+            
+            const customGroupsCount = Object.values(responseData.groups || {}).filter(g => g.isCustom && g.cards.length > 0).length;
+            const usedGroupsCount = Object.keys(groupResults).length;
+            const modifiedGroupNamesCount = responseData.modifiedGroupNames ? responseData.modifiedGroupNames.length : 0;
+            
+            const surveyResults = responseData.surveyData ? {
+                mostUsed: responseData.surveyData.question1.map((card, index) => ({
+                    rank: index + 1,
+                    card: card.content,
+                    group: cardDistribution[card.content] || '미분류'
+                })),
+                leastUsed: responseData.surveyData.question2.map((card, index) => ({
+                    rank: index + 1,
+                    card: card.content,
+                    group: cardDistribution[card.content] || '미분류'
+                }))
+            } : null;
+            
+            return {
+                이름: responseData.name || '알 수 없음',
+                휴대폰뒷번호4자리: responseData.phone || '',
+                시작시간: responseData.startTime,
+                완료시간: responseData.completedTime,
+                소요시간: Math.round(responseData.duration / 60) + '분',
+                소팅방식: responseData.sortingType,
+                참여자가추가한그룹수: customGroupsCount,
+                참여자가분류한그룹수: usedGroupsCount,
+                참여자가변경한그룹명의수: modifiedGroupNamesCount,
+                그룹별결과: JSON.stringify(groupResults),
+                그룹순서: groupOrder.join(' > '),
+                가장많이사용하는혜택: responseData.surveyData ? responseData.surveyData.question1.map(c => c.content).join(', ') : '',
+                가장적게사용하는혜택: responseData.surveyData ? responseData.surveyData.question2.map(c => c.content).join(', ') : '',
+                참여자의견: responseData.participantFeedback || ''
+            };
+        }
+        
+        function downloadJSON(data, filename) {
+            const jsonString = JSON.stringify(data, null, 2);
+            const blob = new Blob([jsonString], { type: 'application/json;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = filename;
+            link.style.display = 'none';
+            
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            URL.revokeObjectURL(url);
+        }
+        
+        function getAllResponses() {
+            const responses = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key && key.startsWith('participant_')) {
+                    const data = loadFromStorage(key);
+                    if (data) responses.push(data);
+                }
+            }
+            return responses;
+        }
+        
+        function openGoogleSheets(spreadsheetId) {
+            if (spreadsheetId && spreadsheetId !== '여기에_스프레드시트_ID_입력') {
+                const sheetsUrl = `https://docs.google.com/spreadsheets/d/${spreadsheetId}/edit`;
+                window.open(sheetsUrl, '_blank');
+            } else {
+                showNotification('⚠️ 스프레드시트 ID가 설정되지 않았습니다.', 'warning');
+            }
+        }
+        
+        // ============================================
+        // 관리자 전용 함수들
+        // ============================================
+        
+        let adminState = {
+            currentUser: null,
+            currentProject: null
+        };
+        
+        const DEFAULT_PROJECT = {
+            id: 'default-project',
+            title: '혜택 콘텐츠 카드소팅',
+            cards: [
+                '방송 알림 신청하고 적립금 받기',
+                '멤버십 가입하고 할인 쿠폰 받기', 
+                '방송 채팅 남기고 적립금 받기',
+                '친구 추천하고 포인트 받기',
+                '첫 구매 후 캐시백 받기',
+                '리뷰 작성하고 적립금 받기',
+                '생일 쿠폰 받기',
+                '등급별 할인 혜택',
+                '무료배송 혜택',
+                '적립금 혜택'
+            ],
+            sortingType: 'hybrid',
+            predefinedGroups: ['구매혜택', '참여혜택', '카드/결제혜택'],
+            shuffleCards: true,
+            allowEditGroups: true,
+            createdAt: new Date().toISOString()
+        };
+        
+        function adminLogin(event) {
+            event.preventDefault();
+            const password = document.getElementById('admin-password').value;
+            if (password === 'LHLH') {
+                adminState.currentUser = { role: 'admin' };
+                showPage('admin-dashboard-page');
+                loadAdminData();
+                updateResponseStats();
+            } else {
+                showNotification('비밀번호가 올바르지 않습니다.', 'error');
+            }
+        }
+        
+        function adminLogout() {
+            adminState.currentUser = null;
+            showPage('admin-login-page');
+            document.getElementById('admin-password').value = '';
+        }
+        
+        function loadAdminData() {
+            const project = loadFromStorage('current_project', DEFAULT_PROJECT);
+            document.getElementById('project-title').value = project.title;
+            document.getElementById('sorting-type').value = project.sortingType;
+            document.getElementById('predefined-groups').value = project.predefinedGroups.join('\n');
+            document.getElementById('card-list').value = project.cards.join('\n');
+            document.getElementById('shuffle-cards').checked = project.shuffleCards || false;
+            document.getElementById('allow-edit-groups').checked = project.allowEditGroups || false;
+            updateCardCount();
+            updateSortingTypeVisibility();
+            
+            const config = loadFromStorage('google_sheets_config');
+            if (config) {
+                document.getElementById('webapp-url').value = config.webappUrl || '';
+                document.getElementById('spreadsheet-id').value = config.spreadsheetId || '';
+            }
+        }
+        
+        function addNewCard() {
+            const newCard = document.getElementById('new-card').value.trim();
+            if (!newCard) return;
+            const cardList = document.getElementById('card-list');
+            const currentCards = cardList.value.trim();
+            if (currentCards) {
+                cardList.value = currentCards + '\n' + newCard;
+            } else {
+                cardList.value = newCard;
+            }
+            document.getElementById('new-card').value = '';
+            updateCardCount();
+        }
+        
+        function updateCardCount() {
+            const cards = document.getElementById('card-list').value.trim().split('\n').filter(card => card.trim());
+            document.getElementById('card-count').textContent = cards.length;
+        }
+        
+        function updateSortingTypeVisibility() {
+            const sortingType = document.getElementById('sorting-type').value;
+            const groupsSection = document.getElementById('predefined-groups-section');
+            if (sortingType === 'open') {
+                groupsSection.style.display = 'none';
+            } else {
+                groupsSection.style.display = 'block';
+            }
+        }
+        
+        function testConnection() {
+            const webappUrl = document.getElementById('webapp-url').value.trim();
+            const spreadsheetId = document.getElementById('spreadsheet-id').value.trim();
+            
+            if (!webappUrl || webappUrl === '여기에_새로운_웹앱_URL_입력') {
+                showNotification('웹앱 URL을 먼저 입력해주세요.', 'warning');
+                return;
+            }
+            
+            const statusDiv = document.getElementById('connection-status');
+            statusDiv.innerHTML = '<strong>연결 상태:</strong> 테스트 중...';
+            statusDiv.className = 'alert alert-info';
+            
+            testGoogleSheetsConnection(webappUrl, spreadsheetId)
+                .then(result => {
+                    if (result.success) {
+                        statusDiv.innerHTML = `✅ <strong>연결 성공!</strong> Google Sheets와 정상 연결되었습니다.`;
+                        statusDiv.className = 'alert alert-success';
+                    } else {
+                        statusDiv.innerHTML = `❌ <strong>연결 실패:</strong> ${result.message}`;
+                        statusDiv.className = 'alert alert-warning';
+                    }
+                })
+                .catch(error => {
+                    statusDiv.innerHTML = `❌ <strong>연결 실패:</strong> ${error.message}`;
+                    statusDiv.className = 'alert alert-warning';
+                });
+        }
+        
+        function generateURL() {
+            const project = {
+                id: generateId(),
+                title: document.getElementById('project-title').value.trim(),
+                sortingType: document.getElementById('sorting-type').value,
+                predefinedGroups: document.getElementById('predefined-groups').value.trim().split('\n').filter(g => g.trim()),
+                cards: document.getElementById('card-list').value.trim().split('\n').filter(c => c.trim()),
+                shuffleCards: document.getElementById('shuffle-cards').checked,
+                allowEditGroups: document.getElementById('allow-edit-groups').checked,
+                createdAt: new Date().toISOString()
+            };
+        
+            if (!project.title || project.cards.length === 0) {
+                showNotification('프로젝트 제목과 카드 목록을 입력해주세요.', 'warning');
+                return;
+            }
+        
+            if (project.cards.length > 100) {
+                showNotification('카드는 최대 100개까지 입력할 수 있습니다.', 'warning');
+                return;
+            }
+        
+            const webappUrl = document.getElementById('webapp-url').value.trim();
+            const spreadsheetId = document.getElementById('spreadsheet-id').value.trim();
+            
+            if (webappUrl && webappUrl !== '여기에_새로운_웹앱_URL_입력') {
+                localStorage.setItem('google_sheets_config', JSON.stringify({
+                    webappUrl: webappUrl,
+                    spreadsheetId: spreadsheetId
+                }));
+            }
+        
+            saveToStorage('current_project', project);
+            adminState.currentProject = project;
+        
+            const baseURL = window.location.origin + window.location.pathname.replace('admin.html', '');
+            const projectURL = `${baseURL}participant.html`;
+            
+            document.getElementById('generated-url').value = projectURL;
+            document.getElementById('generated-url-section').classList.remove('hidden');
+        
+            showNotification('프로젝트가 저장되고 URL이 생성되었습니다!', 'success');
+        }
+        
+        function copyURL() {
+            const urlInput = document.getElementById('generated-url');
+            urlInput.select();
+            document.execCommand('copy');
+            showNotification('URL이 클립보드에 복사되었습니다!', 'success');
+        }
+        
+        function openParticipantURL() {
+            const baseURL = window.location.origin + window.location.pathname.replace('admin.html', '');
+            const participantURL = `${baseURL}participant.html`;
+            window.open(participantURL, '_blank');
+        }
+        
+        function openGoogleSheetsPage() {
+            const spreadsheetId = document.getElementById('spreadsheet-id').value.trim();
+            openGoogleSheets(spreadsheetId);
+        }
+        
+        function updateResponseStats() {
+            const responses = getAllResponses();
+            const completed = responses.filter(r => r.isCompleted);
+            const ongoing = responses.filter(r => !r.isCompleted);
+            
+            const avgDuration = completed.length > 0 
+                ? Math.round(completed.reduce((sum, r) => sum + (r.duration || 0), 0) / completed.length / 60)
+                : 0;
+        
+            document.getElementById('total-responses').textContent = responses.length;
+            document.getElementById('completed-responses').textContent = completed.length;
+            document.getElementById('ongoing-responses').textContent = ongoing.length;
+            document.getElementById('avg-duration').textContent = avgDuration + '분';
+        }
+        
+        function downloadAllResponses() {
+            const responses = getAllResponses();
+            if (responses.length === 0) {
+                showNotification('다운로드할 응답이 없습니다.', 'warning');
+                return;
+            }
+        
+            const project = loadFromStorage('current_project', DEFAULT_PROJECT);
+            const exportData = {
+                projectInfo: project,
+                exportDate: new Date().toISOString(),
+                totalResponses: responses.length,
+                responses: responses.map(r => formatResponseForExport(r, project))
+            };
+        
+            downloadJSON(exportData, `카드소팅_전체응답_${project.title}_${new Date().toISOString().split('T')[0]}.json`);
+        }
+        
+        function clearAllData() {
+            if (confirm('모든 응답 데이터를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.')) {
+                for (let i = localStorage.length - 1; i >= 0; i--) {
+                    const key = localStorage.key(i);
+                    if (key && key.startsWith('participant_')) {
+                        localStorage.removeItem(key);
+                    }
+                }
+                updateResponseStats();
+                showNotification('모든 응답 데이터가 삭제되었습니다.', 'success');
+            }
+        }
+        
+        // ============================================
+        // 이벤트 리스너 설정
+        // ============================================
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('sorting-type').addEventListener('change', updateSortingTypeVisibility);
+            document.getElementById('card-list').addEventListener('input', updateCardCount);
+            
+            document.getElementById('new-card').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    addNewCard();
+                }
+            });
+            
+            updateSortingTypeVisibility();
+            updateCardCount();
+            
+            const savedConfig = loadFromStorage('google_sheets_config');
+            if (savedConfig) {
+                GOOGLE_APPS_SCRIPT_URL = savedConfig.webappUrl || GOOGLE_APPS_SCRIPT_URL;
+                SPREADSHEET_ID = savedConfig.spreadsheetId || SPREADSHEET_ID;
+            }
+            
+            console.log('✅ 관리자 시스템이 준비되었습니다.');
+        });
+    </script>
+</body>
+</html>
