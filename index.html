@@ -1550,8 +1550,8 @@
                                 type="text" 
                                 id="webapp-url" 
                                 class="form-control" 
-                                placeholder="https://script.google.com/macros/s/AKfycbxs5W_wufr_KvxdbhrXgp09iFAnU-A-zoIsQrI-t5Gw7Cez15arEUvH_gUGhAkTIDEkvw/exec"
-                                value="https://script.google.com/macros/s/AKfycbxs5W_wufr_KvxdbhrXgp09iFAnU-A-zoIsQrI-t5Gw7Cez15arEUvH_gUGhAkTIDEkvw/exec"
+                                placeholder="https://script.google.com/macros/s/AKfycbwMBp_1bga7QsjxJBtiFhTRrq0mwPwjv8PIRFtDkDENrSZneXKfb0DbqF9uRTU7VN7HVg/exec"
+                                value="https://script.google.com/macros/s/AKfycbwMBp_1bga7QsjxJBtiFhTRrq0mwPwjv8PIRFtDkDENrSZneXKfb0DbqF9uRTU7VN7HVg/exec"
                             >
                         </div>
 
@@ -1955,7 +1955,7 @@
         // 🔗 Google Sheets 연동 설정 (CORS 우회 버전)
         // ============================================
         
-        let GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxs5W_wufr_KvxdbhrXgp09iFAnU-A-zoIsQrI-t5Gw7Cez15arEUvH_gUGhAkTIDEkvw/exec';
+        let GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwMBp_1bga7QsjxJBtiFhTRrq0mwPwjv8PIRFtDkDENrSZneXKfb0DbqF9uRTU7VN7HVg/exec';
         let SPREADSHEET_ID = '1vn41OvbSoOrlWUSrgbFY_kyUMwjlH6BOAa-MC5xJv1w';
 
         // ============================================
@@ -2076,8 +2076,8 @@
             const webappUrl = document.getElementById('webapp-url').value.trim();
             const spreadsheetId = document.getElementById('spreadsheet-id').value.trim();
             
-            if (!webappUrl || webappUrl === 'https://script.google.com/macros/s/AKfycbxs5W_wufr_KvxdbhrXgp09iFAnU-A-zoIsQrI-t5Gw7Cez15arEUvH_gUGhAkTIDEkvw/exec') {
-                showNotification('https://script.google.com/macros/s/AKfycbxs5W_wufr_KvxdbhrXgp09iFAnU-A-zoIsQrI-t5Gw7Cez15arEUvH_gUGhAkTIDEkvw/exec', 'warning');
+            if (!webappUrl || webappUrl === 'https://script.google.com/macros/s/AKfycbwMBp_1bga7QsjxJBtiFhTRrq0mwPwjv8PIRFtDkDENrSZneXKfb0DbqF9uRTU7VN7HVg/exec') {
+                showNotification('https://script.google.com/macros/s/AKfycbwMBp_1bga7QsjxJBtiFhTRrq0mwPwjv8PIRFtDkDENrSZneXKfb0DbqF9uRTU7VN7HVg/exec', 'warning');
                 return;
             }
             
@@ -2333,7 +2333,7 @@
             const webappUrl = document.getElementById('webapp-url').value.trim();
             const spreadsheetId = document.getElementById('spreadsheet-id').value.trim();
             
-            if (webappUrl && webappUrl !== 'https://script.google.com/macros/s/AKfycbxs5W_wufr_KvxdbhrXgp09iFAnU-A-zoIsQrI-t5Gw7Cez15arEUvH_gUGhAkTIDEkvw/exec') {
+            if (webappUrl && webappUrl !== 'https://script.google.com/macros/s/AKfycbwMBp_1bga7QsjxJBtiFhTRrq0mwPwjv8PIRFtDkDENrSZneXKfb0DbqF9uRTU7VN7HVg/exec') {
                 GOOGLE_APPS_SCRIPT_URL = webappUrl;
                 SPREADSHEET_ID = spreadsheetId;
                 
