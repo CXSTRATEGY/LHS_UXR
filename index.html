@@ -226,12 +226,12 @@
         }
         
         .btn-secondary { 
-            background: #6c757d; 
-            color: white; 
-            border: 1px solid #6c757d; 
+            background: #e9ecef; 
+            color: #495057; 
+            border: 1px solid #ced4da; 
         }
         
-        .btn-secondary:hover { background: #5a6268; border-color: #5a6268; }
+        .btn-secondary:hover { background: #dee2e6; border-color: #ced4da; }
         
         .btn-danger { background: #e74c3c; color: white; }
         .btn-danger:hover { background: #c0392b; }
@@ -839,7 +839,7 @@
             background: white; 
             padding: 30px; 
             border-radius: 12px; 
-            max-width: 500px; 
+            max-width: 700px; 
             width: 90%; 
             max-height: 80vh; 
             overflow-y: auto;
@@ -1177,7 +1177,9 @@
             padding: 20px;
             border: 1px solid #dee2e6;
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            height: fit-content;
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
         }
         
         .feedback-left h3, .feedback-right h3 {
@@ -1189,11 +1191,12 @@
         }
         
         .sorting-result-display {
-            max-height: 400px;
+            max-height: 380px;
             overflow-y: auto;
             padding: 10px;
             background: #f8f9fa;
             border-radius: 8px;
+            flex: 1;
         }
         
         .result-group {
@@ -1225,12 +1228,19 @@
             border-left: 3px solid #667eea;
         }
         
+        .feedback-right .form-group {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+        
         .feedback-textarea { 
             min-height: 300px; 
             resize: vertical; 
             font-family: inherit;
             line-height: 1.6;
             font-size: 14px;
+            flex: 1;
         }
         
         .feedback-textarea::placeholder {
@@ -1311,6 +1321,11 @@
                 gap: 20px;
             }
             
+            .modal-content {
+                max-width: 95%;
+                padding: 20px;
+            }
+            
             /* 설문 페이지 모바일 반응형 */
             .survey-drag-layout {
                 grid-template-columns: 1fr;
@@ -1318,12 +1333,7 @@
             }
             
             .survey-progress-info {
-                flex-direction: column;
-                gap: 10px;
-            }
-            
-            .survey-progress-item {
-                padding: 8px 15px;
+                padding: 15px;
                 font-size: 14px;
             }
             
@@ -1778,13 +1788,10 @@
                         <p style="color: #666; margin-top: 10px;">아래 카드들을 좌우로 드래그해서 선택해주세요.</p>
                     </div>
 
-                    <!-- 진행상황 표시 -->
+                    <!-- 안내 문구 -->
                     <div class="survey-progress-info">
-                        <div class="survey-progress-item q1" id="q1-progress-info">
-                            🔵 가장 많이 사용: 0/3개
-                        </div>
-                        <div class="survey-progress-item q2" id="q2-progress-info">
-                            🔴 가장 적게 사용: 0/3개
+                        <div style="text-align: center; font-size: 16px; color: #333; font-weight: 600;">
+                            지금까지 분류해주신 카드 중 '가장 많이 사용하는 혜택'과 '가장 적게 사용하는 혜택'을 각각 3개씩 분류해주세요.
                         </div>
                     </div>
 
@@ -1793,7 +1800,8 @@
                         <!-- 좌측: 가장 많이 사용 -->
                         <div class="survey-drop-zone drop-zone-left" id="q1-drop-zone">
                             <div class="drop-zone-header">
-                                🔵 가장 많이 사용하는 혜택<br>(3개)
+                                🔵 가장 많이 사용하는 혜택<br>
+                                <span id="q1-progress-display">0/3개</span>
                             </div>
                             <div class="drop-zone-content" id="q1-cards">
                                 <div class="drop-zone-empty">카드를 여기에 드래그하세요</div>
@@ -1814,7 +1822,8 @@
                         <!-- 우측: 가장 적게 사용 -->
                         <div class="survey-drop-zone drop-zone-right" id="q2-drop-zone">
                             <div class="drop-zone-header">
-                                🔴 가장 적게 사용하는 혜택<br>(3개)
+                                🔴 가장 적게 사용하는 혜택<br>
+                                <span id="q2-progress-display">0/3개</span>
                             </div>
                             <div class="drop-zone-content" id="q2-cards">
                                 <div class="drop-zone-empty">카드를 여기에 드래그하세요</div>
@@ -1858,7 +1867,7 @@
                             <textarea 
                                 id="participant-feedback" 
                                 class="form-control feedback-textarea" 
-                                placeholder="무엇을 작성해야할지 모르겠다면 다음 내용들을 참고해주셔도 좋아요 : D&#10;-'카드 분류하기'라는 과정을 참여하면서 느낀 점!&#10;-카드를 분류할 때, 중요하게 신경썼던 점 혹은 어려웠던 점!&#10;-카드의 그룹명을 수정하거나 추가하셨다면, 그 이유!"
+                                placeholder="&#10;무엇을 작성해야할지 모르겠다면 다음 내용들을 참고해주셔도 좋아요 : D&#10;-'카드 분류하기'라는 과정을 참여하면서 느낀 점!&#10;-카드를 분류할 때, 중요하게 신경썼던 점 혹은 어려웠던 점!&#10;-카드의 그룹명을 수정하거나 추가하셨다면, 그 이유!"
                                 maxlength="2000"
                                 oninput="updateCharCount()"
                             ></textarea>
@@ -1919,14 +1928,21 @@
         <div class="modal-content">
             <h3>📖 카드 분류하기 안내서</h3>
             <div style="padding: 20px 0; line-height: 1.8;">
-                <p><strong>🔹 카드 드래그하기:</strong> 카드를 클릭한 상태로 끌어서 원하는 그룹에 놓으세요.</p>
-                <p><strong>🔹 그룹 간 이동:</strong> 이미 분류된 카드도 다른 그룹으로 이동할 수 있어요.</p>
-                <p><strong>🔹 미분류로 되돌리기:</strong> 그룹에 있는 카드를 왼쪽 '미분류 카드' 영역으로 드래그하면되요.</p>
-                <p><strong>🔹 새 그룹 만들기:</strong> 기본 그룹 외에 새로운 그룹을 생성할 수 있어요.</p>
-                <p><strong>🔹 그룹명 수정:</strong> 그룹명은 언제든 마음대로 수정할 수 있어요.</p>
-                <p><strong>🔹 그룹 순서 변경:</strong> 그룹 제목을 드래그해서 중요도에 따라 순서를 바꿀 수 있어요.</p>
-                <br>
-                <p style="color: #666; font-style: italic;">카드 분류하기를 진행하시다가 진행 방법이 궁금하실 때는 언제든지 '카드 분류하기 안내서'버튼을 눌러주세요.</p>
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                    <p style="margin-bottom: 15px; font-size: 16px;"><strong>1.</strong> 왼쪽의 모든 카드 내용(메뉴 항목)을 꼼꼼하게 확인해주세요.</p>
+                    
+                    <p style="margin-bottom: 15px; font-size: 16px;"><strong>2.</strong> 왼쪽의 카드를 클릭한 상태에서 관련성이 높다고 생각되는 오른쪽 그룹으로 옮겨주세요.</p>
+                    
+                    <p style="margin-bottom: 15px; font-size: 16px;"><strong>3.</strong> 그룹 이름은 그대로 사용해도 괜찮고, 변경을 원하실 경우 그룹 이름을 클릭해 원하는 이름으로 수정해 주세요.</p>
+                    
+                    <p style="margin-bottom: 15px; font-size: 16px;"><strong>4.</strong> 어떤 그룹에도 속하지 않는 카드가 있다면, 오른쪽 상단의 '새 그룹 만들기' 버튼을 눌러 새로운 그룹을 만들어 주세요.</p>
+                    
+                    <p style="margin-bottom: 0; font-size: 16px;"><strong>5.</strong> 모든 카드가 그룹에 포함되었는지 다시 한 번 확인한 후, '응답 제출하기' 버튼을 눌러 주세요.</p>
+                </div>
+                
+                <p style="color: #666; font-style: italic; text-align: center; margin-top: 20px;">
+                    카드 분류하기를 진행하시다가 궁금한 점이 있으실 때는 언제든지 '카드 분류하기 안내서' 버튼을 눌러주세요.
+                </p>
             </div>
             <div class="flex justify-center">
                 <button class="btn btn-primary" onclick="closeModal('sorting-guide-modal')">확인</button>
@@ -3031,9 +3047,11 @@
             if (assignedCards === totalCards) {
                 submitBtn.disabled = false;
                 submitBtn.textContent = '✅ 응답 제출하기';
+                submitBtn.style.opacity = '1';
             } else {
-                submitBtn.disabled = false;
+                submitBtn.disabled = false; // 버튼은 활성화하되 클릭시 알럿 표시
                 submitBtn.textContent = `✅ 응답 제출하기 (${totalCards - assignedCards}개 미분류)`;
+                submitBtn.style.opacity = '0.8';
             }
         }
 
@@ -3064,10 +3082,11 @@
             if (!appState.sortingData) return;
             
             const unassignedCount = appState.sortingData.unassignedCards.length;
+            
+            // 모든 카드가 분류되었는지 확인
             if (unassignedCount > 0) {
-                if (!confirm(`${unassignedCount}개의 카드가 아직 분류되지 않았습니다. 그래도 다음 단계로 진행하시겠습니까?`)) {
-                    return;
-                }
+                alert(`아직 ${unassignedCount}개의 카드가 분류되지 않았습니다.\n모든 카드를 그룹으로 이동한 후 다시 시도해주세요.`);
+                return;
             }
             
             // 카드소팅 완료 시간 기록
@@ -3406,26 +3425,38 @@
         }
 
         function updateSurveyProgressInfo() {
-            const q1Progress = document.getElementById('q1-progress-info');
-            const q2Progress = document.getElementById('q2-progress-info');
+            const q1Progress = document.getElementById('q1-progress-display');
+            const q2Progress = document.getElementById('q2-progress-display');
             
             const q1Count = appState.surveyData.question1.length;
             const q2Count = appState.surveyData.question2.length;
             
-            q1Progress.textContent = `🔵 가장 많이 사용: ${q1Count}/3개`;
-            q2Progress.textContent = `🔴 가장 적게 사용: ${q2Count}/3개`;
+            q1Progress.textContent = `${q1Count}/3개`;
+            q2Progress.textContent = `${q2Count}/3개`;
             
-            // 완료 상태 표시
+            // 드롭존 헤더 색상 변경
+            const q1DropZone = document.getElementById('q1-drop-zone');
+            const q2DropZone = document.getElementById('q2-drop-zone');
+            
+            // 완료 상태에 따른 시각적 피드백
             if (q1Count === 3) {
-                q1Progress.classList.add('complete');
+                q1DropZone.querySelector('.drop-zone-header').style.background = '#e8f5e9';
+                q1DropZone.querySelector('.drop-zone-header').style.borderColor = '#4caf50';
+                q1DropZone.querySelector('.drop-zone-header').style.color = '#388e3c';
             } else {
-                q1Progress.classList.remove('complete');
+                q1DropZone.querySelector('.drop-zone-header').style.background = '#e3f2fd';
+                q1DropZone.querySelector('.drop-zone-header').style.borderColor = '#2196f3';
+                q1DropZone.querySelector('.drop-zone-header').style.color = '#1976d2';
             }
             
             if (q2Count === 3) {
-                q2Progress.classList.add('complete');
+                q2DropZone.querySelector('.drop-zone-header').style.background = '#e8f5e9';
+                q2DropZone.querySelector('.drop-zone-header').style.borderColor = '#4caf50';
+                q2DropZone.querySelector('.drop-zone-header').style.color = '#388e3c';
             } else {
-                q2Progress.classList.remove('complete');
+                q2DropZone.querySelector('.drop-zone-header').style.background = '#ffebee';
+                q2DropZone.querySelector('.drop-zone-header').style.borderColor = '#f44336';
+                q2DropZone.querySelector('.drop-zone-header').style.color = '#d32f2f';
             }
             
             // 제출 버튼 상태 업데이트 (항상 활성화, 검증은 제출시)
@@ -3888,11 +3919,11 @@
             updateSortingTypeVisibility();
             updateCardCount();
 
-            console.log('✅ 롯데홈쇼핑 혜택 매장 카드 분류하기 툴 v4.0이 준비되었습니다.');
-            console.log('🎯 새로운 기능: 드래그 앤 드롭 설문, 그룹 표기 개선, 카드 영역 확장');
-            console.log('🔄 설문 방식: 3열 드래그 앤 드롭 (좌측: 많이 사용 | 가운데: 분류 카드 | 우측: 적게 사용)');
-            console.log('🔧 UI 개선: 더 직관적이고 모바일 친화적인 설문 경험');
-            console.log('✨ 검증 강화: 3개씩 선택 완료 후에만 제출 가능');
+            console.log('✅ 롯데홈쇼핑 혜택 매장 카드 분류하기 툴 v4.1이 준비되었습니다.');
+            console.log('🎯 새로운 기능: 완전분류 검증, 설문 UI 개선, 안내서 강화');
+            console.log('🔄 설문 방식: 3열 드래그 앤 드롭 + 실시간 진행표시');
+            console.log('🔧 UX 개선: 더 직관적인 안내 및 검증 시스템');
+            console.log('✨ 완성도 향상: 모든 카드 분류 완료 후 제출 가능');
         });
     </script>
 </body>
