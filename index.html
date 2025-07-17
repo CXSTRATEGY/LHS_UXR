@@ -76,7 +76,7 @@
                 padding: 5px;
             }
             .sorting-workspace {
-                grid-template-columns: 250px 1fr;
+                grid-template-columns: 280px 1fr;
                 gap: 20px;
                 padding: 20px;
             }
@@ -226,12 +226,12 @@
         }
         
         .btn-secondary { 
-            background: #f8f9fa; 
-            color: #495057; 
-            border: 1px solid #dee2e6; 
+            background: #6c757d; 
+            color: white; 
+            border: 1px solid #6c757d; 
         }
         
-        .btn-secondary:hover { background: #e9ecef; }
+        .btn-secondary:hover { background: #5a6268; border-color: #5a6268; }
         
         .btn-danger { background: #e74c3c; color: white; }
         .btn-danger:hover { background: #c0392b; }
@@ -271,11 +271,11 @@
         
         .login-title { 
             text-align: center; 
-            font-size: 20px;
+            font-size: 20px; 
             font-weight: bold; 
             color: #333; 
             margin-bottom: 10px; 
-            line-height: 1.3;
+            line-height: 1.3; 
         }
         
         .login-subtitle { text-align: center; color: #666; margin-bottom: 30px; }
@@ -397,8 +397,8 @@
         .sorting-workspace { 
             display: -ms-grid;
             display: grid; 
-            grid-template-columns: 300px 1fr;
-            -ms-grid-columns: 300px 30px 1fr;
+            grid-template-columns: 320px 1fr;
+            -ms-grid-columns: 320px 30px 1fr;
             gap: 30px; 
             padding: 30px; 
             min-height: calc(100vh - 200px); 
@@ -431,7 +431,7 @@
             font-size: 18px; 
             font-weight: 600;
         }
-        .card-list { max-height: 400px; overflow-y: auto; margin-bottom: 15px; }
+        .card-list { max-height: 500px; overflow-y: auto; margin-bottom: 15px; }
         
         .card-item { 
             background: white; 
@@ -508,63 +508,16 @@
             gap: 15px;
         }
         
-        /* 수정사항 1: 안내문 폰트 크기 증가 */
+        /* 추가: 그룹 순서 안내 텍스트 */
         .group-order-guide {
             background: #e3f2fd;
             border: 1px solid #2196f3;
             border-radius: 8px;
-            padding: 12px 20px;
+            padding: 10px 15px;
             margin-bottom: 15px;
-            font-size: 16px; /* 14px에서 16px로 증가 */
+            font-size: 14px;
             color: #1976d2;
             text-align: center;
-            font-weight: 600;
-        }
-        
-        /* 수정사항 4: 그룹 영역 레이블 추가 */
-        .groups-area-label {
-            background: #667eea;
-            color: white;
-            padding: 10px 20px;
-            font-weight: 600;
-            font-size: 16px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        /* 수정사항 5: 안내서 버튼 동적 모션 */
-        .guide-btn-animated {
-            animation: pulseGlow 2s infinite;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .guide-btn-animated::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            animation: shine 3s infinite;
-        }
-        
-        @keyframes pulseGlow {
-            0%, 100% { 
-                box-shadow: 0 0 5px rgba(102, 126, 234, 0.5);
-                transform: scale(1);
-            }
-            50% { 
-                box-shadow: 0 0 20px rgba(102, 126, 234, 0.8);
-                transform: scale(1.05);
-            }
-        }
-        
-        @keyframes shine {
-            0% { left: -100%; }
-            100% { left: 100%; }
         }
         
         .groups-container { 
@@ -633,22 +586,34 @@
             z-index: 1000;
         }
         
-        /* 수정사항 2: 그룹 순위와 카드 수 구분 개선 */
-        .group-rank {
+        /* 그룹 순위 및 카드 수 표시 */
+        .group-meta-info {
             position: absolute;
             top: 8px;
             right: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 5px;
+            z-index: 10;
+        }
+        
+        .group-rank {
             background: #667eea;
             color: white;
-            border-radius: 20px;
-            padding: 4px 8px;
-            display: flex;
-            align-items: center;
-            gap: 4px;
+            border-radius: 4px;
+            padding: 2px 6px;
             font-size: 12px;
             font-weight: bold;
-            border: 2px solid white;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .group-card-count {
+            background: #28a745;
+            color: white;
+            border-radius: 4px;
+            padding: 2px 6px;
+            font-size: 12px;
+            font-weight: bold;
         }
         
         .group-header { 
@@ -670,10 +635,10 @@
             margin-bottom: 15px; 
             padding-bottom: 10px; 
             border-bottom: 1px solid #dee2e6; 
-            padding-top: 15px;
+            padding-top: 35px; /* 드래그 핸들과 메타 정보 공간 확보 */
+            padding-right: 80px; /* 우측 메타 정보와 겹치지 않게 */
         }
         
-        /* 수정사항 4: 그룹 타이틀 앞에 아이콘 추가 */
         .group-title { 
             font-weight: 600; 
             color: #333; 
@@ -681,15 +646,7 @@
             -webkit-flex: 1;
             -moz-box-flex: 1;
             -ms-flex: 1;
-            flex: 1;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .group-title::before {
-            content: "📁";
-            font-size: 16px;
+            flex: 1; 
         }
         
         .group-title.editable { 
@@ -705,7 +662,7 @@
         
         .group-title.editable:hover { background: #e9ecef; }
         
-        .group-meta { 
+        .group-actions { 
             display: -webkit-box;
             display: -webkit-flex;
             display: -moz-box;
@@ -717,26 +674,6 @@
             -ms-flex-align: center;
             align-items: center; 
             gap: 10px; 
-        }
-        
-        /* 수정사항 2: 카드 수 표시 개선 */
-        .card-count { 
-            background: #28a745; 
-            color: white; 
-            padding: 4px 8px; 
-            border-radius: 12px; 
-            font-size: 12px; 
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            -webkit-border-radius: 12px;
-            -moz-border-radius: 12px;
-        }
-        
-        .card-count::before {
-            content: "📋";
-            font-size: 10px;
         }
         
         .delete-group-btn { 
@@ -770,76 +707,6 @@
         .group-content { min-height: 120px; }
         .empty-group { text-align: center; color: #adb5bd; padding: 40px 20px; font-style: italic; }
         .group-content .card-item { margin: 8px 0; }
-        
-        /* 수정사항 6: 튜토리얼 스타일 */
-        .tutorial-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.8);
-            z-index: 2000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .tutorial-content {
-            background: white;
-            border-radius: 16px;
-            padding: 30px;
-            max-width: 600px;
-            width: 90%;
-            text-align: center;
-            position: relative;
-        }
-        
-        .tutorial-demo {
-            position: relative;
-            height: 200px;
-            background: #f8f9fa;
-            border-radius: 12px;
-            margin: 20px 0;
-            overflow: hidden;
-            border: 2px solid #dee2e6;
-        }
-        
-        .demo-card {
-            position: absolute;
-            background: #fff9e6;
-            border: 1px solid #f0ad4e;
-            border-radius: 8px;
-            padding: 8px 12px;
-            font-size: 14px;
-            cursor: move;
-            transition: all 0.5s ease;
-        }
-        
-        .demo-group {
-            position: absolute;
-            right: 20px;
-            top: 20px;
-            background: #f8f9fa;
-            border: 2px dashed #667eea;
-            border-radius: 12px;
-            padding: 15px;
-            width: 150px;
-            height: 120px;
-        }
-        
-        .demo-group-title {
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 10px;
-            font-size: 14px;
-        }
-        
-        @keyframes cardMove {
-            0% { left: 20px; top: 20px; }
-            50% { left: 120px; top: 60px; transform: rotate(5deg) scale(1.1); }
-            100% { left: 200px; top: 60px; transform: rotate(0deg) scale(1); }
-        }
         
         .sorting-actions { 
             background: white; 
@@ -984,235 +851,282 @@
         .welcome-container { text-align: center; padding: 60px 30px; }
         .welcome-message { background: white; padding: 40px; border-radius: 12px; margin-bottom: 30px; line-height: 1.8; }
         
-        /* 수정사항 7: 설문 페이지 UI 완전 재설계 */
-        .survey-container { 
-            padding: 20px;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-        
+        /* 새로운 설문 페이지 스타일 - 드래그 앤 드롭 방식 */
+        .survey-container { padding: 30px; }
         .survey-header { 
             text-align: center; 
-            margin-bottom: 20px; 
+            margin-bottom: 30px; 
+            position: relative; 
             background: #f8f9fa;
             padding: 20px;
             border-radius: 12px;
             border: 1px solid #dee2e6;
-            flex-shrink: 0;
         }
+        .survey-header h2 { color: #333; font-size: 24px; margin-bottom: 15px; }
         
-        .survey-header h2 { 
-            color: #333; 
-            font-size: 22px; 
-            margin-bottom: 15px; 
-        }
-        
-        /* 수정사항 7: 상단 고정 선택 현황 */
-        .selected-cards-sticky {
-            position: sticky;
-            top: 0;
-            background: white;
-            z-index: 100;
-            border-bottom: 2px solid #eee;
-            padding: 15px 20px;
-            margin: 0 -20px 20px -20px;
-            flex-shrink: 0;
-        }
-        
-        .selected-summary {
+        /* 3열 드래그 앤 드롭 레이아웃 */
+        .survey-drag-layout {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr 2fr 1fr;
             gap: 20px;
-            max-height: 120px;
-            overflow-y: auto;
+            min-height: 500px;
+            margin-bottom: 30px;
         }
         
-        .selected-column {
-            border-radius: 8px;
-            padding: 15px;
-            border: 2px solid;
-        }
-        
-        .selected-column.q1 {
-            background: #e3f2fd;
-            border-color: #2196f3;
-        }
-        
-        .selected-column.q2 {
-            background: #ffebee;
-            border-color: #f44336;
-        }
-        
-        .selected-column h4 {
-            margin: 0 0 10px 0;
-            font-size: 16px;
-            font-weight: 600;
-        }
-        
-        .selected-column.q1 h4 { color: #1976d2; }
-        .selected-column.q2 h4 { color: #d32f2f; }
-        
-        .selected-list {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-        
-        .selected-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 14px;
-            padding: 4px 8px;
+        .survey-drop-zone {
             background: white;
-            border-radius: 6px;
-        }
-        
-        .selected-rank {
-            background: currentColor;
-            color: white;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            font-weight: bold;
-            flex-shrink: 0;
-        }
-        
-        /* 수정사항 7: 좌우 분할 설문 영역 */
-        .survey-split {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            flex: 1;
-            overflow: hidden;
-        }
-        
-        .survey-question { 
-            background: white;
+            border: 3px dashed #dee2e6;
             border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            display: flex;
-            flex-direction: column;
-            height: 100%;
+            padding: 20px;
+            min-height: 400px;
+            position: relative;
+            transition: all 0.3s;
         }
         
-        .survey-question-header {
-            color: white;
-            padding: 15px 20px;
+        .survey-drop-zone.drag-over {
+            border-color: #667eea;
+            background: #f8f9ff;
+            transform: scale(1.02);
+        }
+        
+        .drop-zone-header {
+            text-align: center;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
             font-weight: 600;
             font-size: 16px;
-            flex-shrink: 0;
         }
         
-        .survey-question.q1 .survey-question-header {
-            background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
+        .drop-zone-left .drop-zone-header {
+            background: #e3f2fd;
+            color: #1976d2;
+            border: 2px solid #2196f3;
         }
         
-        .survey-question.q2 .survey-question-header {
-            background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+        .drop-zone-right .drop-zone-header {
+            background: #ffebee;
+            color: #d32f2f;
+            border: 2px solid #f44336;
         }
         
-        .survey-question h3 { 
-            color: white; 
-            margin: 0; 
-            font-size: 16px; 
-            line-height: 1.4;
+        .drop-zone-content {
+            min-height: 300px;
+            position: relative;
         }
         
-        .card-selection-area { 
-            background: #f8f9fa; 
-            padding: 15px; 
-            flex: 1;
-            overflow-y: auto;
+        .drop-zone-empty {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #adb5bd;
+            font-style: italic;
+            text-align: center;
+            pointer-events: none;
         }
         
-        .selectable-card { 
-            background: white; 
-            padding: 10px 15px; 
-            margin: 6px 0; 
-            border-radius: 8px; 
-            border: 2px solid #dee2e6; 
-            cursor: pointer; 
-            -webkit-transition: all 0.2s;
-            -moz-transition: all 0.2s;
-            transition: all 0.2s; 
-            position: relative; 
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none; 
-            font-size: 14px; 
-            display: block;
-            -webkit-border-radius: 8px;
-            -moz-border-radius: 8px;
+        .survey-dropped-card {
+            background: white;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+            cursor: move;
+            position: relative;
+            transition: all 0.2s;
+            font-size: 14px;
         }
         
-        .selectable-card:hover { 
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            -webkit-box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            -moz-box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        .survey-dropped-card:hover {
             transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
         
-        .selectable-card.selected-q1 { 
-            border-color: #2196f3; 
-            background: #e3f2fd; 
+        .survey-dropped-card.dragging {
+            opacity: 0.5;
+            transform: rotate(3deg);
+        }
+        
+        .survey-dropped-card.q1 {
+            border-color: #2196f3;
+            background: #e3f2fd;
             color: #1976d2;
         }
-        .selectable-card.selected-q2 { 
-            border-color: #f44336; 
-            background: #ffebee; 
+        
+        .survey-dropped-card.q2 {
+            border-color: #f44336;
+            background: #ffebee;
             color: #d32f2f;
         }
         
-        .card-number { 
-            position: absolute; 
-            top: -8px; 
-            right: -8px; 
-            background: #fff; 
-            border: 2px solid; 
-            border-radius: 50%; 
-            width: 24px; 
-            height: 24px; 
-            display: -webkit-box;
-            display: -webkit-flex;
-            display: -moz-box;
-            display: -ms-flexbox;
-            display: flex; 
-            -webkit-box-align: center;
-            -webkit-align-items: center;
-            -moz-box-align: center;
-            -ms-flex-align: center;
-            align-items: center; 
-            -webkit-box-pack: center;
-            -webkit-justify-content: center;
-            -moz-box-pack: center;
-            -ms-flex-pack: center;
-            justify-content: center; 
-            font-weight: bold; 
+        .survey-card-rank {
+            position: absolute;
+            top: -8px;
+            left: -8px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: white;
+            border: 2px solid;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
             font-size: 12px;
-            -webkit-border-radius: 50%;
-            -moz-border-radius: 50%;
         }
         
-        .card-number.q1 { border-color: #2196f3; color: #2196f3; }
-        .card-number.q2 { border-color: #f44336; color: #f44336; }
+        .survey-card-rank.q1 {
+            border-color: #2196f3;
+            color: #2196f3;
+        }
         
-        .survey-question-footer {
-            padding: 10px 20px;
+        .survey-card-rank.q2 {
+            border-color: #f44336;
+            color: #f44336;
+        }
+        
+        /* 가운데 카드 영역 */
+        .survey-cards-center {
             background: #f8f9fa;
-            border-top: 1px solid #dee2e6;
-            font-size: 14px;
-            color: #666;
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #dee2e6;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        
+        .survey-center-header {
             text-align: center;
-            flex-shrink: 0;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+        }
+        
+        .survey-center-header h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        
+        .survey-center-header p {
+            color: #666;
+            font-size: 14px;
+            margin: 0;
+        }
+        
+        .survey-group-section {
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            border: 1px solid #dee2e6;
+        }
+        
+        .survey-group-header {
+            background: #667eea;
+            color: white;
+            padding: 12px 15px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .survey-group-toggle {
+            font-size: 16px;
+            transition: transform 0.3s;
+        }
+        
+        .survey-group-toggle.collapsed {
+            transform: rotate(-90deg);
+        }
+        
+        .survey-group-cards {
+            padding: 15px;
+            display: block;
+        }
+        
+        .survey-group-cards.collapsed {
+            display: none;
+        }
+        
+        .survey-draggable-card {
+            background: white;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 8px;
+            cursor: move;
+            position: relative;
+            transition: all 0.2s;
+            font-size: 14px;
+            user-select: none;
+        }
+        
+        .survey-draggable-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .survey-draggable-card.dragging {
+            opacity: 0.5;
+            transform: rotate(3deg);
+        }
+        
+        .survey-draggable-card.selected {
+            border-color: #667eea;
+            background: #f8f9ff;
+            opacity: 0.7;
+        }
+        
+        .survey-draggable-card::after {
+            content: "⋮⋮";
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #adb5bd;
+            font-weight: bold;
+        }
+        
+        .survey-progress-info {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .survey-progress-item {
+            text-align: center;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+        
+        .survey-progress-item.q1 {
+            background: #e3f2fd;
+            color: #1976d2;
+            border: 1px solid #2196f3;
+        }
+        
+        .survey-progress-item.q2 {
+            background: #ffebee;
+            color: #d32f2f;
+            border: 1px solid #f44336;
+        }
+        
+        .survey-progress-item.complete {
+            background: #e8f5e9;
+            color: #388e3c;
+            border: 1px solid #4caf50;
         }
         
         .checkbox-group { 
@@ -1232,78 +1146,13 @@
         
         .checkbox-group input[type="checkbox"] { margin: 0; }
         
-        /* 그룹별 카드 표시를 위한 새로운 스타일 */
-        .group-section { 
-            background: #f8f9fa; 
-            border-radius: 12px; 
-            margin: 10px 0; 
-            border: 1px solid #dee2e6;
-            -webkit-border-radius: 12px;
-            -moz-border-radius: 12px;
-        }
-        
-        .group-section-header { 
-            background: #667eea; 
-            color: white; 
-            padding: 10px 15px; 
-            border-radius: 12px 12px 0 0; 
-            cursor: pointer; 
-            display: -webkit-box;
-            display: -webkit-flex;
-            display: -moz-box;
-            display: -ms-flexbox;
-            display: flex; 
-            -webkit-box-pack: justify;
-            -webkit-justify-content: space-between;
-            -moz-box-pack: justify;
-            -ms-flex-pack: justify;
-            justify-content: space-between; 
-            -webkit-box-align: center;
-            -webkit-align-items: center;
-            -moz-box-align: center;
-            -ms-flex-align: center;
-            align-items: center;
-            -webkit-border-radius: 12px 12px 0 0;
-            -moz-border-radius: 12px 12px 0 0;
-        }
-        
-        .group-section-header:hover { background: #5a6fd8; }
-        .group-section-title { font-weight: 600; font-size: 14px; }
-        
-        .group-card-count { 
-            background: rgba(255,255,255,0.2); 
-            padding: 2px 8px; 
-            border-radius: 10px; 
-            font-size: 12px;
-            -webkit-border-radius: 10px;
-            -moz-border-radius: 10px;
-        }
-        
-        .group-toggle { 
-            font-size: 16px; 
-            -webkit-transition: -webkit-transform 0.3s;
-            -moz-transition: -moz-transform 0.3s;
-            transition: transform 0.3s; 
-        }
-        
-        .group-toggle.collapsed { 
-            -webkit-transform: rotate(-90deg);
-            -moz-transform: rotate(-90deg);
-            transform: rotate(-90deg); 
-        }
-        
-        .group-cards { padding: 15px; display: none; }
-        .group-cards.expanded { display: block; }
-        .group-cards .selectable-card { display: block; margin: 6px 0; }
-        
-        /* 수정사항 9&10: 의견 수집 페이지 스타일 개선 */
+        /* 의견 수집 페이지 스타일 */
         .feedback-container { 
             padding: 30px; 
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 30px;
-            align-items: stretch; /* 수정사항 10: 높이 동일 */
-            min-height: calc(100vh - 200px);
+            align-items: start;
         }
         
         .feedback-header { 
@@ -1322,35 +1171,16 @@
             margin-bottom: 15px; 
         }
         
-        .feedback-left {
+        .feedback-left, .feedback-right {
             background: white;
             border-radius: 12px;
             padding: 20px;
             border: 1px solid #dee2e6;
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            display: flex;
-            flex-direction: column;
+            height: fit-content;
         }
         
-        .feedback-right {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            border: 1px solid #dee2e6;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .feedback-left h3 {
-            color: #667eea;
-            font-size: 18px;
-            margin-bottom: 20px;
-            text-align: center;
-            font-weight: 600;
-        }
-        
-        .feedback-right h3 {
+        .feedback-left h3, .feedback-right h3 {
             color: #667eea;
             font-size: 18px;
             margin-bottom: 20px;
@@ -1359,7 +1189,7 @@
         }
         
         .sorting-result-display {
-            flex: 1;
+            max-height: 400px;
             overflow-y: auto;
             padding: 10px;
             background: #f8f9fa;
@@ -1395,42 +1225,17 @@
             border-left: 3px solid #667eea;
         }
         
-        /* 수정사항 9: 특별한 텍스트 에리어 */
-        .feedback-textarea-container {
-            position: relative;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-        
         .feedback-textarea { 
-            flex: 1;
-            resize: none;
+            min-height: 300px; 
+            resize: vertical; 
             font-family: inherit;
             line-height: 1.6;
             font-size: 14px;
-            background: transparent;
-            z-index: 2;
-            position: relative;
-            padding: 12px;
-            border: 2px solid #e1e5e9;
-            border-radius: 8px;
         }
         
-        .feedback-placeholder {
-            position: absolute;
-            top: 12px;
-            left: 12px;
-            right: 12px;
-            bottom: 12px;
-            font-size: 14px;
+        .feedback-textarea::placeholder {
             line-height: 1.6;
-            color: #999;
-            font-style: italic;
-            pointer-events: none;
-            z-index: 1;
-            white-space: pre-wrap;
-            overflow: hidden;
+            white-space: pre-line;
         }
         
         .char-counter { 
@@ -1438,7 +1243,6 @@
             font-size: 14px; 
             color: #666; 
             margin-top: 5px; 
-            flex-shrink: 0;
         }
         .char-counter.warning { color: #f57c00; }
         .char-counter.danger { color: #e74c3c; }
@@ -1447,28 +1251,6 @@
             grid-column: 1 / -1;
             text-align: center;
             margin-top: 20px;
-        }
-        
-        /* 알림 스타일 개선 */
-        .notification {
-            position: fixed;
-            top: 50px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 9999;
-            max-width: 500px;
-            padding: 20px 25px;
-            border-radius: 12px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-            font-weight: 600;
-            font-size: 16px;
-            animation: slideInDown 0.3s ease-out;
-            border: 2px solid;
-        }
-        
-        @keyframes slideInDown {
-            from { opacity: 0; transform: translateX(-50%) translateY(-30px); }
-            to { opacity: 1; transform: translateX(-50%) translateY(0); }
         }
         
         /* 모바일 및 태블릿 반응형 */
@@ -1524,40 +1306,48 @@
                 width: 100%; 
             }
             
-            .selectable-card { display: block; margin: 8px 0; }
-            
-            .survey-header { 
-                -webkit-box-orient: vertical;
-                -webkit-box-direction: normal;
-                -webkit-flex-direction: column;
-                -moz-box-orient: vertical;
-                -moz-box-direction: normal;
-                -ms-flex-direction: column;
-                flex-direction: column; 
-                gap: 15px; 
-                -webkit-box-align: center;
-                -webkit-align-items: center;
-                -moz-box-align: center;
-                -ms-flex-align: center;
-                align-items: center; 
-            }
-            
-            .group-section-header { padding: 12px 15px; }
-            .group-cards { padding: 15px; }
-            
             .feedback-container {
                 grid-template-columns: 1fr;
                 gap: 20px;
             }
             
-            .survey-split {
+            /* 설문 페이지 모바일 반응형 */
+            .survey-drag-layout {
                 grid-template-columns: 1fr;
                 gap: 15px;
             }
             
-            .selected-summary {
-                grid-template-columns: 1fr;
+            .survey-progress-info {
+                flex-direction: column;
                 gap: 10px;
+            }
+            
+            .survey-progress-item {
+                padding: 8px 15px;
+                font-size: 14px;
+            }
+            
+            .drop-zone-header {
+                padding: 10px;
+                font-size: 14px;
+            }
+            
+            .survey-drop-zone {
+                min-height: 200px;
+                padding: 15px;
+            }
+            
+            .survey-cards-center {
+                padding: 15px;
+                max-height: 400px;
+            }
+            
+            .survey-center-header h3 {
+                font-size: 16px;
+            }
+            
+            .survey-center-header p {
+                font-size: 13px;
             }
         }
         
@@ -1577,6 +1367,28 @@
                 display: -ms-grid;
                 -ms-grid-columns: 1fr 15px 1fr;
             }
+        }
+        
+        /* 알림 스타일 */
+        .notification {
+            position: fixed;
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 9999;
+            max-width: 500px;
+            padding: 20px 25px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            font-weight: 600;
+            font-size: 16px;
+            animation: slideInDown 0.3s ease-out;
+            border: 2px solid;
+        }
+        
+        @keyframes slideInDown {
+            from { opacity: 0; transform: translateX(-50%) translateY(-30px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
         }
     </style>
 </head>
@@ -1916,26 +1728,12 @@
                     </div>
 
                     <div class="groups-area">
-                        <!-- 수정사항 4: 그룹 영역 레이블 추가 -->
-                        <div class="groups-area-label">
-                            <span>📁</span>
-                            <span>그룹 영역</span>
-                        </div>
-                        
                         <div class="groups-header">
-                            <!-- 수정사항 5: 동적 모션 적용 -->
                             <button 
-                                class="btn btn-secondary guide-btn-animated" 
+                                class="btn btn-secondary" 
                                 onclick="showSortingGuide()"
                             >
                                 📖 카드 분류하기 안내서
-                            </button>
-                            <!-- 수정사항 6: 튜토리얼 버튼 추가 -->
-                            <button 
-                                class="btn btn-secondary" 
-                                onclick="showTutorial()"
-                            >
-                                🎯 튜토리얼 보기
                             </button>
                             <button 
                                 class="btn btn-secondary" 
@@ -1946,7 +1744,6 @@
                             </button>
                         </div>
                         
-                        <!-- 수정사항 1: 안내문 폰트 크기 증가 -->
                         <div class="group-order-guide">
                             💡 중요하다고 생각하시는 그룹순으로 배열해보세요! 그룹 제목을 드래그해서 순서를 변경할 수 있어요.
                         </div>
@@ -1972,49 +1769,55 @@
             </div>
         </div>
 
-        <!-- 수정사항 7: 완전 재설계된 설문 응답 페이지 -->
+        <!-- 설문 응답하기 페이지 -->
         <div id="survey-page" class="page">
             <div class="card">
                 <div class="survey-container">
                     <div class="survey-header">
                         <h2>와! 정말 멋진 카드분류가 완성되었는데요! 몇가지만 질문 드릴게요!</h2>
+                        <p style="color: #666; margin-top: 10px;">아래 카드들을 좌우로 드래그해서 선택해주세요.</p>
                     </div>
 
-                    <!-- 수정사항 7: 상단 고정 선택 현황 -->
-                    <div class="selected-cards-sticky">
-                        <div class="selected-summary">
-                            <div class="selected-column q1">
-                                <h4>🔵 가장 많이 사용 (선택: <span id="q1-count">0</span>/3)</h4>
-                                <div class="selected-list" id="q1-selected-list"></div>
-                            </div>
-                            <div class="selected-column q2">
-                                <h4>🔴 가장 적게 사용 (선택: <span id="q2-count">0</span>/3)</h4>
-                                <div class="selected-list" id="q2-selected-list"></div>
-                            </div>
+                    <!-- 진행상황 표시 -->
+                    <div class="survey-progress-info">
+                        <div class="survey-progress-item q1" id="q1-progress-info">
+                            🔵 가장 많이 사용: 0/3개
+                        </div>
+                        <div class="survey-progress-item q2" id="q2-progress-info">
+                            🔴 가장 적게 사용: 0/3개
                         </div>
                     </div>
 
-                    <!-- 수정사항 7: 좌우 분할 설문 영역 -->
-                    <div class="survey-split">
-                        <div class="survey-question q1">
-                            <div class="survey-question-header">
-                                <h3>질문1. 혜택 매장에서 가장 많이 사용(참여)하고 계신 것은 무엇인가요?<br>순서대로 3개만 골라주세요.</h3>
+                    <!-- 드래그 앤 드롭 레이아웃 -->
+                    <div class="survey-drag-layout">
+                        <!-- 좌측: 가장 많이 사용 -->
+                        <div class="survey-drop-zone drop-zone-left" id="q1-drop-zone">
+                            <div class="drop-zone-header">
+                                🔵 가장 많이 사용하는 혜택<br>(3개)
                             </div>
-                            <div class="card-selection-area">
-                                <div id="q1-groups">
-                                    <!-- 그룹별 카드들이 여기에 표시됩니다 -->
-                                </div>
+                            <div class="drop-zone-content" id="q1-cards">
+                                <div class="drop-zone-empty">카드를 여기에 드래그하세요</div>
                             </div>
                         </div>
 
-                        <div class="survey-question q2">
-                            <div class="survey-question-header">
-                                <h3>질문2. 혜택 매장에서 가장 사용(참여)하지 않으시는 것은 무엇인가요?<br>순서대로 3개만 골라주세요.</h3>
+                        <!-- 가운데: 분류된 카드들 -->
+                        <div class="survey-cards-center">
+                            <div class="survey-center-header">
+                                <h3>분류하신 카드들</h3>
+                                <p>카드를 좌우로 드래그해서 선택해주세요</p>
                             </div>
-                            <div class="card-selection-area">
-                                <div id="q2-groups">
-                                    <!-- 그룹별 카드들이 여기에 표시됩니다 -->
-                                </div>
+                            <div id="survey-center-groups">
+                                <!-- 그룹별 카드들이 여기에 표시됩니다 -->
+                            </div>
+                        </div>
+
+                        <!-- 우측: 가장 적게 사용 -->
+                        <div class="survey-drop-zone drop-zone-right" id="q2-drop-zone">
+                            <div class="drop-zone-header">
+                                🔴 가장 적게 사용하는 혜택<br>(3개)
+                            </div>
+                            <div class="drop-zone-content" id="q2-cards">
+                                <div class="drop-zone-empty">카드를 여기에 드래그하세요</div>
                             </div>
                         </div>
                     </div>
@@ -2024,7 +1827,7 @@
                             <button class="btn btn-secondary" onclick="returnToSorting()">
                                 ← 카드 분류로 돌아가기
                             </button>
-                            <button class="btn btn-primary" onclick="submitSurvey()" id="survey-submit-btn" disabled>
+                            <button class="btn btn-primary" onclick="submitSurvey()" id="survey-submit-btn">
                                 응답 제출하기
                             </button>
                         </div>
@@ -2033,7 +1836,7 @@
             </div>
         </div>
 
-        <!-- 수정사항 9&10: 개선된 의견 수집 페이지 -->
+        <!-- 의견 수집 페이지 -->
         <div id="feedback-page" class="page">
             <div class="card">
                 <div class="feedback-container">
@@ -2051,20 +1854,16 @@
 
                     <div class="feedback-right">
                         <h3>어떤 의견이든 도움이 될거에요!</h3>
-                        <!-- 수정사항 9: 특별한 텍스트 에리어 -->
-                        <div class="feedback-textarea-container">
-                            <div class="feedback-placeholder" id="feedback-placeholder">무엇을 작성해야할지 모르겠다면 다음 내용들을 참고해주셔도 좋아요 : D
--'카드 분류하기'라는 과정을 참여하면서 느낀 점!
--카드를 분류할 때, 중요하게 신경썼던 점 혹은 어려웠던 점!
--카드의 그룹명을 수정하거나 추가하셨다면, 그 이유!</div>
+                        <div class="form-group">
                             <textarea 
                                 id="participant-feedback" 
                                 class="form-control feedback-textarea" 
+                                placeholder="무엇을 작성해야할지 모르겠다면 다음 내용들을 참고해주셔도 좋아요 : D&#10;-'카드 분류하기'라는 과정을 참여하면서 느낀 점!&#10;-카드를 분류할 때, 중요하게 신경썼던 점 혹은 어려웠던 점!&#10;-카드의 그룹명을 수정하거나 추가하셨다면, 그 이유!"
                                 maxlength="2000"
-                                oninput="updateCharCount(); updatePlaceholder()"
+                                oninput="updateCharCount()"
                             ></textarea>
+                            <div class="char-counter" id="char-counter">0 / 2000자</div>
                         </div>
-                        <div class="char-counter" id="char-counter">0 / 2000자</div>
                     </div>
 
                     <div class="feedback-actions">
@@ -2135,27 +1934,6 @@
         </div>
     </div>
 
-    <!-- 수정사항 6: 튜토리얼 모달 -->
-    <div id="tutorial-overlay" class="tutorial-overlay">
-        <div class="tutorial-content">
-            <h2>🎯 카드 분류하기 튜토리얼</h2>
-            <p id="tutorial-text">카드를 드래그해서 그룹으로 이동하는 방법을 보여드릴게요!</p>
-            
-            <div class="tutorial-demo">
-                <div class="demo-card" id="demo-card">예시 카드</div>
-                <div class="demo-group">
-                    <div class="demo-group-title">📁 구매 혜택</div>
-                    <div style="color: #999; font-size: 12px;">카드를 여기로 이동!</div>
-                </div>
-            </div>
-            
-            <div class="flex gap-2 justify-center">
-                <button class="btn btn-secondary" onclick="closeTutorial()">건너뛰기</button>
-                <button class="btn btn-primary" id="tutorial-btn" onclick="nextTutorialStep()">시작하기</button>
-            </div>
-        </div>
-    </div>
-
     <script>
         // ============================================
         // 🔗 Google Sheets 연동 설정 (CORS 우회 버전)
@@ -2198,30 +1976,6 @@
             allowEditGroups: true,
             createdAt: new Date().toISOString()
         };
-
-        // ============================================
-        // 수정사항 6: 튜토리얼 관련 변수
-        // ============================================
-        
-        let tutorialStep = 0;
-        const tutorialSteps = [
-            {
-                text: "카드를 드래그해서 그룹으로 이동하는 방법을 보여드릴게요!",
-                action: "start"
-            },
-            {
-                text: "1단계: 카드를 클릭하고 드래그해보세요!",
-                action: "drag"
-            },
-            {
-                text: "2단계: 그룹 영역에 카드를 놓으면 분류가 완료됩니다!",
-                action: "drop"
-            },
-            {
-                text: "참고: 그룹의 명칭을 수정할 수 있고 새 그룹을 만들 수도있어요!",
-                action: "reorder"
-            }
-        ];
 
         // ============================================
         // 🔗 CORS 우회 Google Sheets 연동 함수들
@@ -2379,7 +2133,7 @@
         }
 
         /**
-         * 개선된 알림 표시 함수
+         * 알림 표시 함수
          */
         function showNotification(message, type = 'info') {
             const notification = document.createElement('div');
@@ -2455,67 +2209,6 @@
 
         function closeModal(modalId) {
             document.getElementById(modalId).classList.remove('show');
-        }
-
-        // ============================================
-        // 수정사항 6: 튜토리얼 함수들
-        // ============================================
-
-        function showTutorial() {
-            document.getElementById('tutorial-overlay').style.display = 'flex';
-            tutorialStep = 0;
-            updateTutorialContent();
-        }
-
-        function closeTutorial() {
-            document.getElementById('tutorial-overlay').style.display = 'none';
-            tutorialStep = 0;
-        }
-
-        function nextTutorialStep() {
-            if (tutorialStep < tutorialSteps.length - 1) {
-                tutorialStep++;
-                updateTutorialContent();
-                executeTutorialAction();
-            } else {
-                closeTutorial();
-                showNotification('✅ 튜토리얼이 완료되었습니다! 이제 카드 분류를 시작해보세요!', 'success');
-            }
-        }
-
-        function updateTutorialContent() {
-            const step = tutorialSteps[tutorialStep];
-            document.getElementById('tutorial-text').textContent = step.text;
-            
-            const btn = document.getElementById('tutorial-btn');
-            if (tutorialStep === 0) {
-                btn.textContent = '시작하기';
-            } else if (tutorialStep === tutorialSteps.length - 1) {
-                btn.textContent = '완료';
-            } else {
-                btn.textContent = '다음 단계';
-            }
-        }
-
-        function executeTutorialAction() {
-            const step = tutorialSteps[tutorialStep];
-            const demoCard = document.getElementById('demo-card');
-            
-            switch (step.action) {
-                case 'drag':
-                    demoCard.style.animation = 'cardMove 2s ease-in-out infinite';
-                    break;
-                case 'drop':
-                    demoCard.style.animation = 'cardMove 2s ease-in-out';
-                    demoCard.style.animationFillMode = 'forwards';
-                    break;
-                case 'reorder':
-                    demoCard.style.animation = 'none';
-                    demoCard.style.left = '200px';
-                    demoCard.style.top = '60px';
-                    demoCard.textContent = '상품 구매하고 쿠폰 받기';
-                    break;
-            }
         }
 
         // ============================================
@@ -2960,13 +2653,22 @@
             dragHandle.title = '그룹 순서 변경 (드래그)';
             groupDiv.appendChild(dragHandle);
             
-            // 수정사항 2: 개선된 그룹 순위 표시
+            // 그룹 메타 정보 (순위 및 카드 수)
+            const metaInfo = document.createElement('div');
+            metaInfo.className = 'group-meta-info';
+            
             const rankDiv = document.createElement('div');
             rankDiv.className = 'group-rank';
-            const rankIcon = ['🥇', '🥈', '🥉'][rank - 1] || '🏅';
-            rankDiv.innerHTML = `${rankIcon} ${rank}순위`;
+            rankDiv.textContent = `그룹${rank}`;
             rankDiv.title = `${rank}순위 그룹`;
-            groupDiv.appendChild(rankDiv);
+            metaInfo.appendChild(rankDiv);
+            
+            const cardCountDiv = document.createElement('div');
+            cardCountDiv.className = 'group-card-count';
+            cardCountDiv.textContent = `카드 수: ${group.cards.length}개`;
+            metaInfo.appendChild(cardCountDiv);
+            
+            groupDiv.appendChild(metaInfo);
             
             const header = document.createElement('div');
             header.className = 'group-header';
@@ -2981,25 +2683,19 @@
                 title.addEventListener('click', () => editGroupName(group.id));
             }
             
-            const meta = document.createElement('div');
-            meta.className = 'group-meta';
-            
-            // 수정사항 2: 개선된 카드 수 표시
-            const count = document.createElement('span');
-            count.className = 'card-count';
-            count.textContent = `${group.cards.length}개`;
-            meta.appendChild(count);
+            const actions = document.createElement('div');
+            actions.className = 'group-actions';
             
             if (group.isCustom) {
                 const deleteBtn = document.createElement('button');
                 deleteBtn.className = 'delete-group-btn';
                 deleteBtn.textContent = '×';
                 deleteBtn.onclick = () => deleteGroup(group.id);
-                meta.appendChild(deleteBtn);
+                actions.appendChild(deleteBtn);
             }
             
             header.appendChild(title);
-            header.appendChild(meta);
+            header.appendChild(actions);
             
             const content = document.createElement('div');
             content.className = 'group-content';
@@ -3283,10 +2979,8 @@
             closeModal('create-group-modal');
             document.getElementById('new-group-name').value = '';
             autoSave();
-            showNotification('✅ 새 그룹이 생성되었습니다!', 'success');
         }
 
-        // 수정사항 3: 그룹명 수정시 알럿 추가
         function editGroupName(groupId) {
             const group = appState.sortingData.groups[groupId];
             if (!group) return;
@@ -3306,8 +3000,6 @@
                 group.name = newName.trim();
                 renderGroups();
                 autoSave();
-                // 수정사항 3: 그룹명 수정 알럿
-                showNotification('✅ 그룹명이 수정되었습니다!', 'success');
             }
         }
 
@@ -3321,7 +3013,6 @@
                 renderSortingUI();
                 updateProgress();
                 autoSave();
-                showNotification('✅ 그룹이 삭제되었습니다.', 'success');
             }
         }
 
@@ -3364,7 +3055,6 @@
             renderSortingUI();
             updateProgress();
             autoSave();
-            showNotification('✅ 모든 카드가 초기화되었습니다.', 'success');
         }
 
         /**
@@ -3392,7 +3082,7 @@
         }
 
         // ============================================
-        // 수정사항 7: 완전 재설계된 설문 응답 페이지 함수들
+        // 설문 응답하기 페이지 함수들 (드래그 앤 드롭 방식)
         // ============================================
 
         function showSurveyPage() {
@@ -3410,17 +3100,342 @@
                 };
             }
             
-            renderSurveyCardsByGroup();
+            // 드롭 존 이벤트 리스너 설정
+            setupSurveyDropZones();
             
-            // 저장된 설문 상태가 있으면 카드 표시 복원
-            if (appState.surveyData && (appState.surveyData.question1.length > 0 || appState.surveyData.question2.length > 0)) {
-                setTimeout(() => {
-                    updateCardDisplay();
-                    updateStickyDisplay();
-                }, 100);
+            // 가운데 카드들 렌더링
+            renderSurveyCenterCards();
+            
+            // 기존 선택된 카드들 복원
+            restoreSurveySelections();
+            
+            // 진행상황 업데이트
+            updateSurveyProgressInfo();
+        }
+
+        function setupSurveyDropZones() {
+            const q1DropZone = document.getElementById('q1-drop-zone');
+            const q2DropZone = document.getElementById('q2-drop-zone');
+            
+            // 드롭 존 이벤트 리스너
+            [q1DropZone, q2DropZone].forEach(zone => {
+                zone.addEventListener('dragover', handleSurveyDragOver);
+                zone.addEventListener('drop', handleSurveyDrop);
+                zone.addEventListener('dragenter', handleSurveyDragEnter);
+                zone.addEventListener('dragleave', handleSurveyDragLeave);
+            });
+        }
+
+        function renderSurveyCenterCards() {
+            const container = document.getElementById('survey-center-groups');
+            container.innerHTML = '';
+            
+            // 그룹별 카드 렌더링
+            const { groups } = appState.sortingData;
+            const sortedGroups = Object.values(groups)
+                .filter(group => group.cards.length > 0)
+                .sort((a, b) => (a.order || 0) - (b.order || 0));
+            
+            sortedGroups.forEach(group => {
+                const groupSection = createSurveyGroupSection(group);
+                container.appendChild(groupSection);
+            });
+            
+            // 미분류 카드가 있다면 추가
+            if (appState.sortingData.unassignedCards && appState.sortingData.unassignedCards.length > 0) {
+                const unassignedGroup = {
+                    name: '미분류',
+                    cards: appState.sortingData.unassignedCards,
+                    order: 999
+                };
+                const groupSection = createSurveyGroupSection(unassignedGroup);
+                container.appendChild(groupSection);
+            }
+        }
+
+        function createSurveyGroupSection(group) {
+            const section = document.createElement('div');
+            section.className = 'survey-group-section';
+            
+            const header = document.createElement('div');
+            header.className = 'survey-group-header';
+            header.onclick = () => toggleSurveyGroup(section);
+            
+            const title = document.createElement('span');
+            title.textContent = `${group.name} (${group.cards.length}개)`;
+            
+            const toggle = document.createElement('span');
+            toggle.className = 'survey-group-toggle';
+            toggle.textContent = '▼';
+            
+            header.appendChild(title);
+            header.appendChild(toggle);
+            
+            const cardsContainer = document.createElement('div');
+            cardsContainer.className = 'survey-group-cards';
+            
+            group.cards.forEach(card => {
+                // 이미 선택된 카드인지 확인
+                const isInQ1 = appState.surveyData.question1.some(c => c.id === card.id);
+                const isInQ2 = appState.surveyData.question2.some(c => c.id === card.id);
+                
+                if (!isInQ1 && !isInQ2) {
+                    const cardElement = createSurveyDraggableCard(card);
+                    cardsContainer.appendChild(cardElement);
+                }
+            });
+            
+            section.appendChild(header);
+            section.appendChild(cardsContainer);
+            
+            return section;
+        }
+
+        function createSurveyDraggableCard(card) {
+            const cardDiv = document.createElement('div');
+            cardDiv.className = 'survey-draggable-card';
+            cardDiv.textContent = card.content;
+            cardDiv.draggable = true;
+            cardDiv.dataset.cardId = card.id;
+            cardDiv.dataset.cardContent = card.content;
+            
+            // 드래그 이벤트
+            cardDiv.addEventListener('dragstart', handleSurveyCardDragStart);
+            cardDiv.addEventListener('dragend', handleSurveyCardDragEnd);
+            
+            return cardDiv;
+        }
+
+        function createSurveyDroppedCard(card, questionNum) {
+            const cardDiv = document.createElement('div');
+            cardDiv.className = `survey-dropped-card q${questionNum}`;
+            cardDiv.textContent = card.content;
+            cardDiv.draggable = true;
+            cardDiv.dataset.cardId = card.id;
+            cardDiv.dataset.cardContent = card.content;
+            cardDiv.dataset.questionNum = questionNum;
+            
+            // 순위 표시
+            const rankDiv = document.createElement('div');
+            rankDiv.className = `survey-card-rank q${questionNum}`;
+            cardDiv.appendChild(rankDiv);
+            
+            // 드래그 이벤트 (다시 드래그할 수 있음)
+            cardDiv.addEventListener('dragstart', handleSurveyDroppedCardDragStart);
+            cardDiv.addEventListener('dragend', handleSurveyCardDragEnd);
+            
+            return cardDiv;
+        }
+
+        function toggleSurveyGroup(section) {
+            const cardsContainer = section.querySelector('.survey-group-cards');
+            const toggle = section.querySelector('.survey-group-toggle');
+            
+            if (cardsContainer.classList.contains('collapsed')) {
+                cardsContainer.classList.remove('collapsed');
+                toggle.classList.remove('collapsed');
+                toggle.textContent = '▼';
+            } else {
+                cardsContainer.classList.add('collapsed');
+                toggle.classList.add('collapsed');
+                toggle.textContent = '▶';
+            }
+        }
+
+        // 드래그 앤 드롭 이벤트 핸들러들
+        function handleSurveyCardDragStart(event) {
+            const cardId = event.target.dataset.cardId;
+            const cardContent = event.target.dataset.cardContent;
+            
+            event.dataTransfer.setData('text/card-id', cardId);
+            event.dataTransfer.setData('text/card-content', cardContent);
+            event.dataTransfer.setData('text/drag-source', 'center');
+            
+            event.target.classList.add('dragging');
+        }
+
+        function handleSurveyDroppedCardDragStart(event) {
+            const cardId = event.target.dataset.cardId;
+            const cardContent = event.target.dataset.cardContent;
+            const questionNum = event.target.dataset.questionNum;
+            
+            event.dataTransfer.setData('text/card-id', cardId);
+            event.dataTransfer.setData('text/card-content', cardContent);
+            event.dataTransfer.setData('text/drag-source', `question${questionNum}`);
+            
+            event.target.classList.add('dragging');
+        }
+
+        function handleSurveyCardDragEnd(event) {
+            event.target.classList.remove('dragging');
+            
+            // 모든 드롭 존의 드래그 오버 상태 제거
+            document.querySelectorAll('.survey-drop-zone').forEach(zone => {
+                zone.classList.remove('drag-over');
+            });
+        }
+
+        function handleSurveyDragOver(event) {
+            event.preventDefault();
+        }
+
+        function handleSurveyDragEnter(event) {
+            event.preventDefault();
+            event.currentTarget.classList.add('drag-over');
+        }
+
+        function handleSurveyDragLeave(event) {
+            // 드래그가 자식 요소로 이동한 경우가 아닐 때만 제거
+            if (!event.currentTarget.contains(event.relatedTarget)) {
+                event.currentTarget.classList.remove('drag-over');
+            }
+        }
+
+        function handleSurveyDrop(event) {
+            event.preventDefault();
+            event.currentTarget.classList.remove('drag-over');
+            
+            const cardId = event.dataTransfer.getData('text/card-id');
+            const cardContent = event.dataTransfer.getData('text/card-content');
+            const dragSource = event.dataTransfer.getData('text/drag-source');
+            
+            // 어떤 드롭 존인지 확인
+            const dropZone = event.currentTarget;
+            let targetQuestion = 0;
+            
+            if (dropZone.id === 'q1-drop-zone') {
+                targetQuestion = 1;
+            } else if (dropZone.id === 'q2-drop-zone') {
+                targetQuestion = 2;
             }
             
-            updateSurveyButtonState();
+            if (targetQuestion === 0) return;
+            
+            // 카드 객체 찾기
+            const card = findCardById(cardId);
+            if (!card) return;
+            
+            // 기존 선택에서 제거
+            removeCardFromSelections(cardId);
+            
+            // 새로운 선택에 추가 (최대 3개 제한)
+            const targetArray = targetQuestion === 1 ? appState.surveyData.question1 : appState.surveyData.question2;
+            
+            if (targetArray.length >= 3) {
+                showNotification(`최대 3개까지만 선택할 수 있습니다.`, 'warning');
+                return;
+            }
+            
+            targetArray.push(card);
+            
+            // UI 업데이트
+            updateSurveyDropZones();
+            renderSurveyCenterCards();
+            updateSurveyProgressInfo();
+        }
+
+        function findCardById(cardId) {
+            // 모든 그룹에서 카드 찾기
+            const { groups, unassignedCards } = appState.sortingData;
+            
+            // 그룹에서 찾기
+            for (const group of Object.values(groups)) {
+                const card = group.cards.find(c => c.id === cardId);
+                if (card) return card;
+            }
+            
+            // 미분류에서 찾기
+            if (unassignedCards) {
+                const card = unassignedCards.find(c => c.id === cardId);
+                if (card) return card;
+            }
+            
+            return null;
+        }
+
+        function removeCardFromSelections(cardId) {
+            // 질문1에서 제거
+            const q1Index = appState.surveyData.question1.findIndex(c => c.id === cardId);
+            if (q1Index !== -1) {
+                appState.surveyData.question1.splice(q1Index, 1);
+            }
+            
+            // 질문2에서 제거
+            const q2Index = appState.surveyData.question2.findIndex(c => c.id === cardId);
+            if (q2Index !== -1) {
+                appState.surveyData.question2.splice(q2Index, 1);
+            }
+        }
+
+        function updateSurveyDropZones() {
+            // 질문1 드롭 존 업데이트
+            const q1Container = document.getElementById('q1-cards');
+            q1Container.innerHTML = '';
+            
+            if (appState.surveyData.question1.length === 0) {
+                const emptyDiv = document.createElement('div');
+                emptyDiv.className = 'drop-zone-empty';
+                emptyDiv.textContent = '카드를 여기에 드래그하세요';
+                q1Container.appendChild(emptyDiv);
+            } else {
+                appState.surveyData.question1.forEach((card, index) => {
+                    const cardElement = createSurveyDroppedCard(card, 1);
+                    const rankDiv = cardElement.querySelector('.survey-card-rank');
+                    rankDiv.textContent = index + 1;
+                    q1Container.appendChild(cardElement);
+                });
+            }
+            
+            // 질문2 드롭 존 업데이트
+            const q2Container = document.getElementById('q2-cards');
+            q2Container.innerHTML = '';
+            
+            if (appState.surveyData.question2.length === 0) {
+                const emptyDiv = document.createElement('div');
+                emptyDiv.className = 'drop-zone-empty';
+                emptyDiv.textContent = '카드를 여기에 드래그하세요';
+                q2Container.appendChild(emptyDiv);
+            } else {
+                appState.surveyData.question2.forEach((card, index) => {
+                    const cardElement = createSurveyDroppedCard(card, 2);
+                    const rankDiv = cardElement.querySelector('.survey-card-rank');
+                    rankDiv.textContent = index + 1;
+                    q2Container.appendChild(cardElement);
+                });
+            }
+        }
+
+        function updateSurveyProgressInfo() {
+            const q1Progress = document.getElementById('q1-progress-info');
+            const q2Progress = document.getElementById('q2-progress-info');
+            
+            const q1Count = appState.surveyData.question1.length;
+            const q2Count = appState.surveyData.question2.length;
+            
+            q1Progress.textContent = `🔵 가장 많이 사용: ${q1Count}/3개`;
+            q2Progress.textContent = `🔴 가장 적게 사용: ${q2Count}/3개`;
+            
+            // 완료 상태 표시
+            if (q1Count === 3) {
+                q1Progress.classList.add('complete');
+            } else {
+                q1Progress.classList.remove('complete');
+            }
+            
+            if (q2Count === 3) {
+                q2Progress.classList.add('complete');
+            } else {
+                q2Progress.classList.remove('complete');
+            }
+            
+            // 제출 버튼 상태 업데이트 (항상 활성화, 검증은 제출시)
+            const submitBtn = document.getElementById('survey-submit-btn');
+            submitBtn.disabled = false;
+        }
+
+        function restoreSurveySelections() {
+            // 기존 선택된 카드들이 있으면 드롭 존에 표시
+            updateSurveyDropZones();
         }
 
         function returnToSorting() {
@@ -3436,237 +3451,26 @@
             updateProgress();
         }
 
-        function renderSurveyCardsByGroup() {
-            const { groups } = appState.sortingData;
-            
-            // 질문1용 그룹별 카드 렌더링
-            const q1Container = document.getElementById('q1-groups');
-            q1Container.innerHTML = '';
-            
-            // 질문2용 그룹별 카드 렌더링  
-            const q2Container = document.getElementById('q2-groups');
-            q2Container.innerHTML = '';
-            
-            // 카드가 있는 그룹들만 표시 (order 순서대로)
-            const sortedGroups = Object.values(groups)
-                .filter(group => group.cards.length > 0)
-                .sort((a, b) => (a.order || 0) - (b.order || 0));
-            
-            sortedGroups.forEach(group => {
-                // 질문1용 그룹 섹션 생성
-                const q1GroupSection = createGroupSection(group, 1);
-                q1Container.appendChild(q1GroupSection);
-                
-                // 질문2용 그룹 섹션 생성
-                const q2GroupSection = createGroupSection(group, 2);
-                q2Container.appendChild(q2GroupSection);
-            });
-            
-            // 미분류 카드가 있다면 추가
-            if (appState.sortingData.unassignedCards && appState.sortingData.unassignedCards.length > 0) {
-                const unassignedGroup = {
-                    name: '미분류',
-                    cards: appState.sortingData.unassignedCards
-                };
-                
-                const q1UnassignedSection = createGroupSection(unassignedGroup, 1);
-                q1Container.appendChild(q1UnassignedSection);
-                
-                const q2UnassignedSection = createGroupSection(unassignedGroup, 2);
-                q2Container.appendChild(q2UnassignedSection);
-            }
-        }
-
-        function createGroupSection(group, questionNum) {
-            const section = document.createElement('div');
-            section.className = 'group-section';
-            
-            const header = document.createElement('div');
-            header.className = 'group-section-header';
-            header.onclick = () => toggleGroupSection(section);
-            
-            const title = document.createElement('div');
-            title.className = 'group-section-title';
-            title.textContent = group.name;
-            
-            const cardCount = document.createElement('div');
-            cardCount.className = 'group-card-count';
-            cardCount.textContent = `${group.cards.length}개`;
-            
-            const toggle = document.createElement('div');
-            toggle.className = 'group-toggle';
-            toggle.textContent = '▼';
-            
-            header.appendChild(title);
-            header.appendChild(cardCount);
-            header.appendChild(toggle);
-            
-            const cardsContainer = document.createElement('div');
-            cardsContainer.className = 'group-cards expanded'; // 기본적으로 펼쳐진 상태
-            
-            group.cards.forEach(card => {
-                const cardElement = createSelectableCard(card, questionNum);
-                cardsContainer.appendChild(cardElement);
-            });
-            
-            section.appendChild(header);
-            section.appendChild(cardsContainer);
-            
-            return section;
-        }
-
-        function toggleGroupSection(section) {
-            const cardsContainer = section.querySelector('.group-cards');
-            const toggle = section.querySelector('.group-toggle');
-            
-            if (cardsContainer.classList.contains('expanded')) {
-                cardsContainer.classList.remove('expanded');
-                toggle.classList.add('collapsed');
-                toggle.textContent = '▶';
-            } else {
-                cardsContainer.classList.add('expanded');
-                toggle.classList.remove('collapsed');
-                toggle.textContent = '▼';
-            }
-        }
-
-        function createSelectableCard(card, questionNum) {
-            const cardDiv = document.createElement('div');
-            cardDiv.className = 'selectable-card';
-            cardDiv.textContent = card.content;
-            cardDiv.dataset.cardId = card.id;
-            cardDiv.dataset.question = questionNum;
-            
-            cardDiv.addEventListener('click', () => selectCard(card, questionNum));
-            
-            return cardDiv;
-        }
-
-        function selectCard(card, questionNum) {
-            const questionKey = `question${questionNum}`;
-            const otherQuestionKey = questionNum === 1 ? 'question2' : 'question1';
-            const selectedCards = appState.surveyData[questionKey];
-            const otherSelectedCards = appState.surveyData[otherQuestionKey];
-            
-            // 다른 질문에서 이미 선택된 카드인지 확인
-            const isSelectedInOther = otherSelectedCards.some(c => c.id === card.id);
-            if (isSelectedInOther) {
-                showNotification('이미 다른 질문에서 선택된 카드입니다.', 'warning');
-                return;
-            }
-            
-            // 현재 질문에서 이미 선택된 카드인지 확인
-            const existingIndex = selectedCards.findIndex(c => c.id === card.id);
-            
-            if (existingIndex !== -1) {
-                // 이미 선택된 카드면 선택 해제
-                selectedCards.splice(existingIndex, 1);
-            } else {
-                // 새로 선택하는 카드
-                if (selectedCards.length >= 3) {
-                    showNotification('최대 3개까지만 선택할 수 있습니다.', 'warning');
-                    return;
-                }
-                selectedCards.push(card);
-            }
-            
-            // 카드 표시 업데이트
-            updateCardDisplay();
-            updateStickyDisplay();
-            updateSurveyButtonState();
-        }
-
-        function updateCardDisplay() {
-            // 질문1 카드 표시 업데이트
-            document.querySelectorAll('[data-question="1"]').forEach(cardElement => {
-                const cardId = cardElement.dataset.cardId;
-                const selectedIndex = appState.surveyData.question1.findIndex(c => c.id === cardId);
-                
-                cardElement.className = 'selectable-card';
-                cardElement.querySelector('.card-number')?.remove();
-                
-                if (selectedIndex !== -1) {
-                    cardElement.classList.add('selected-q1');
-                    const numberDiv = document.createElement('div');
-                    numberDiv.className = 'card-number q1';
-                    numberDiv.textContent = selectedIndex + 1;
-                    cardElement.appendChild(numberDiv);
-                }
-            });
-            
-            // 질문2 카드 표시 업데이트
-            document.querySelectorAll('[data-question="2"]').forEach(cardElement => {
-                const cardId = cardElement.dataset.cardId;
-                const selectedIndex = appState.surveyData.question2.findIndex(c => c.id === cardId);
-                
-                cardElement.className = 'selectable-card';
-                cardElement.querySelector('.card-number')?.remove();
-                
-                if (selectedIndex !== -1) {
-                    cardElement.classList.add('selected-q2');
-                    const numberDiv = document.createElement('div');
-                    numberDiv.className = 'card-number q2';
-                    numberDiv.textContent = selectedIndex + 1;
-                    cardElement.appendChild(numberDiv);
-                }
-            });
-        }
-
-        // 수정사항 7: 상단 고정 선택 현황 업데이트
-        function updateStickyDisplay() {
-            // 질문1 선택 현황
-            const q1List = document.getElementById('q1-selected-list');
-            const q1Count = document.getElementById('q1-count');
-            q1List.innerHTML = '';
-            q1Count.textContent = appState.surveyData.question1.length;
-            
-            appState.surveyData.question1.forEach((card, index) => {
-                const item = document.createElement('div');
-                item.className = 'selected-item';
-                item.innerHTML = `
-                    <div class="selected-rank">${index + 1}</div>
-                    <span>${card.content}</span>
-                `;
-                q1List.appendChild(item);
-            });
-            
-            // 질문2 선택 현황
-            const q2List = document.getElementById('q2-selected-list');
-            const q2Count = document.getElementById('q2-count');
-            q2List.innerHTML = '';
-            q2Count.textContent = appState.surveyData.question2.length;
-            
-            appState.surveyData.question2.forEach((card, index) => {
-                const item = document.createElement('div');
-                item.className = 'selected-item';
-                item.innerHTML = `
-                    <div class="selected-rank">${index + 1}</div>
-                    <span>${card.content}</span>
-                `;
-                q2List.appendChild(item);
-            });
-        }
-
-        function updateSurveyButtonState() {
-            const submitBtn = document.getElementById('survey-submit-btn');
-            const q1Complete = appState.surveyData.question1.length === 3;
-            const q2Complete = appState.surveyData.question2.length === 3;
-            
-            submitBtn.disabled = !(q1Complete && q2Complete);
-        }
-
         /**
-         * 수정사항 8: 설문 제출시 validation 추가
+         * 설문 제출 - 검증 후 의견 수집 페이지로 이동
          */
         async function submitSurvey() {
             if (!appState.sortingData || !appState.surveyData) return;
             
-            // 수정사항 8: 미완성 응답 체크
-            const q1Complete = appState.surveyData.question1.length === 3;
-            const q2Complete = appState.surveyData.question2.length === 3;
+            const q1Count = appState.surveyData.question1.length;
+            const q2Count = appState.surveyData.question2.length;
             
-            if (!q1Complete || !q2Complete) {
-                showNotification('아직 모두 응답하지 않았어요! 각 질문마다 3개씩 선택해주세요.', 'warning');
+            // 검증: 각각 3개씩 선택되었는지 확인
+            if (q1Count !== 3 || q2Count !== 3) {
+                let message = '선택을 완료해주세요:\n';
+                if (q1Count !== 3) {
+                    message += `• 가장 많이 사용하는 혜택: ${q1Count}/3개 선택됨\n`;
+                }
+                if (q2Count !== 3) {
+                    message += `• 가장 적게 사용하는 혜택: ${q2Count}/3개 선택됨`;
+                }
+                
+                alert(message);
                 return;
             }
             
@@ -3684,7 +3488,7 @@
         }
 
         // ============================================
-        // 수정사항 9&10: 개선된 의견 수집 페이지 함수들
+        // 의견 수집 페이지 함수들
         // ============================================
 
         function showFeedbackPage() {
@@ -3697,7 +3501,6 @@
             if (appState.sortingData.tempFeedback) {
                 document.getElementById('participant-feedback').value = appState.sortingData.tempFeedback;
                 updateCharCount();
-                updatePlaceholder();
             }
         }
 
@@ -3717,8 +3520,7 @@
                 
                 const header = document.createElement('div');
                 header.className = 'result-group-header';
-                const rankIcon = ['🥇', '🥈', '🥉'][index] || '🏅';
-                header.textContent = `${rankIcon} ${index + 1}순위: ${group.name} (${group.cards.length}개)`;
+                header.textContent = `그룹${index + 1}: ${group.name} (${group.cards.length}개)`;
                 
                 const cardsContainer = document.createElement('div');
                 cardsContainer.className = 'result-group-cards';
@@ -3762,33 +3564,6 @@
             }
         }
 
-        // 수정사항 9: 특별한 placeholder 처리
-        function updatePlaceholder() {
-            const textarea = document.getElementById('participant-feedback');
-            const placeholder = document.getElementById('feedback-placeholder');
-            const userText = textarea.value;
-            
-            if (userText.trim() === '') {
-                placeholder.style.display = 'block';
-            } else {
-                // 사용자 입력에 따라 placeholder 라인별로 숨기기
-                const lines = userText.split('\n');
-                const placeholderLines = placeholder.textContent.split('\n');
-                
-                let visiblePlaceholder = '';
-                for (let i = 0; i < placeholderLines.length; i++) {
-                    if (i >= lines.length || lines[i].trim() === '') {
-                        visiblePlaceholder += (i > 0 ? '\n' : '') + placeholderLines[i];
-                    } else {
-                        visiblePlaceholder += (i > 0 ? '\n' : '') + '';
-                    }
-                }
-                
-                placeholder.textContent = visiblePlaceholder;
-                placeholder.style.display = visiblePlaceholder.trim() ? 'block' : 'none';
-            }
-        }
-
         function updateCharCount() {
             const textarea = document.getElementById('participant-feedback');
             const counter = document.getElementById('char-counter');
@@ -3808,7 +3583,7 @@
         }
 
         function returnToSurvey() {
-            // 현재 입력된 의견 임시 저장 (디폴트 텍스트 제외)
+            // 현재 입력된 의견 임시 저장
             const feedback = document.getElementById('participant-feedback').value.trim();
             if (feedback) {
                 appState.sortingData.tempFeedback = feedback;
@@ -3822,9 +3597,8 @@
             if (!appState.sortingData || !appState.surveyData) return;
             
             try {
-                // 의견 수집 (디폴트 텍스트는 제외)
-                const rawFeedback = document.getElementById('participant-feedback').value;
-                const feedback = rawFeedback.trim();
+                // 의견 수집
+                const feedback = document.getElementById('participant-feedback').value.trim();
                 
                 // 완료 처리
                 appState.sortingData.isCompleted = true;
@@ -4042,10 +3816,7 @@
             // 의견 수집 textarea 이벤트 리스너
             const feedbackTextarea = document.getElementById('participant-feedback');
             if (feedbackTextarea) {
-                feedbackTextarea.addEventListener('input', function() {
-                    updateCharCount();
-                    updatePlaceholder();
-                });
+                feedbackTextarea.addEventListener('input', updateCharCount);
                 
                 // 최대 글자수 제한
                 feedbackTextarea.addEventListener('paste', function(e) {
@@ -4054,7 +3825,6 @@
                         if (e.target.value.length > maxLength) {
                             e.target.value = e.target.value.substring(0, maxLength);
                             updateCharCount();
-                            updatePlaceholder();
                             showNotification('최대 2000자까지 입력할 수 있습니다.', 'warning');
                         }
                     }, 0);
@@ -4118,12 +3888,12 @@
             updateSortingTypeVisibility();
             updateCardCount();
 
-            console.log('✅ 롯데홈쇼핑 혜택 매장 카드 분류하기 툴이 준비되었습니다.');
-            console.log('📱 해상도 최적화: 1920×1080 기준, 고해상도/저해상도 대응 완료');
-            console.log('🌐 Cross-browser 호환성: Chrome, Firefox, Safari, Edge, IE11+ 지원');
-            console.log('🎯 새로운 기능: 그룹 순서 변경, 의견 수집, 향상된 UI');
-            console.log('✨ UX 완전 개선: 직관적인 참여자 경험, 튜토리얼, 개선된 설문');
+            console.log('✅ 롯데홈쇼핑 혜택 매장 카드 분류하기 툴 v4.0이 준비되었습니다.');
+            console.log('🎯 새로운 기능: 드래그 앤 드롭 설문, 그룹 표기 개선, 카드 영역 확장');
+            console.log('🔄 설문 방식: 3열 드래그 앤 드롭 (좌측: 많이 사용 | 가운데: 분류 카드 | 우측: 적게 사용)');
+            console.log('🔧 UI 개선: 더 직관적이고 모바일 친화적인 설문 경험');
+            console.log('✨ 검증 강화: 3개씩 선택 완료 후에만 제출 가능');
         });
     </script>
 </body>
-</html>
+</html> 
